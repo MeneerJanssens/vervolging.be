@@ -2,9 +2,11 @@
 import { Image } from 'astro:assets';
 import logo from '../assets/logo/hvk-logo.png';
 import { navigatie, site } from '../data/site';
+import { nettePad } from '../lib/pad';
 
-const pad = Astro.url.pathname.replace(/\/$/, '') || '/';
-const actief = (href: string) => (href === '/' ? pad === '/' : pad === href || pad.startsWith(href + '/'));
+const pad = nettePad(Astro.url.pathname);
+// 'page' = deze pagina; 'true' = een pagina binnen deze rubriek
+const actief = (href: string) => (pad === href ? 'page' : href !== '/' && pad.startsWith(href + '/') ? 'true' : undefined);
 ---
 
 <header class="kop">
@@ -18,7 +20,7 @@ const actief = (href: string) => (href === '/' ? pad === '/' : pad === href || p
       <ul>
         {navigatie.map((item) => (
           <li class:list={['nav-item', { 'heeft-sub': item.children }]}>
-            <a href={item.href} aria-current={actief(item.href) ? 'page' : undefined}>{item.label}</a>
+            <a href={item.href} aria-current={actief(item.href)}>{item.label}</a>
             {item.children && (
               <ul class="sub">
                 {item.children.map((c) => (
@@ -32,7 +34,7 @@ const actief = (href: string) => (href === '/' ? pad === '/' : pad === href || p
     </nav>
 
     <div class="kop-acties">
-      <a href={site.fransVersie} class="taal" hreflang="fr" lang="fr" title="Version française">FR</a>
+      {site.fransVersie && <a href={site.fransVersie} class="taal" hreflang="fr" lang="fr" title="Version française">FR</a>}
       <a href="/steun-ons" class="knop knop-doorn knop-steun">Steun ons</a>
     </div>
 
@@ -51,7 +53,7 @@ const actief = (href: string) => (href === '/' ? pad === '/' : pad === href || p
             </li>
           ))}
           <li><a href="/contact">Contact</a></li>
-          <li><a href={site.fransVersie} lang="fr">Version française</a></li>
+          {site.fransVersie && <li><a href={site.fransVersie} lang="fr">Version française</a></li>}
         </ul>
         <a href="/steun-ons" class="knop knop-doorn">Steun ons</a>
       </nav>
@@ -105,7 +107,7 @@ const actief = (href: string) => (href === '/' ? pad === '/' : pad === href || p
     border-radius: 6px;
   }
   .nav-item > a:hover { color: var(--blauw); }
-  .nav-item > a[aria-current='page'] {
+  .nav-item > a[aria-current] {
     color: var(--blauw);
     text-decoration: underline;
     text-decoration-color: var(--doorn);
