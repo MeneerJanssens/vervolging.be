@@ -1,0 +1,44 @@
+---
+import { Image } from 'astro:assets';
+import foto from '../assets/foto/pakistan-verwoest-huis.jpg';
+import { site } from '../data/site';
+interface Props { titel?: string }
+const { titel = 'Sta naast wie alles riskeert' } = Astro.props;
+---
+
+<section class="oproep">
+  <Image src={foto} alt="" widths={[800, 1200, 1600]} sizes="100vw" class="oproep-foto" />
+  <div class="wrap oproep-binnen op-donker">
+    <h2>{titel}</h2>
+    <p>HVK leeft volledig van giften. Met jouw bijdrage helpen we christenen die om hun geloof hun huis, werk of vrijheid verloren.</p>
+    <p class="oproep-iban">{site.iban}<span>op naam van {site.naam}</span></p>
+    <div class="knoppen">
+      <a href="/steun-ons" class="knop knop-doorn">Steun ons</a>
+      <a href="/doe-mee/bid-mee" class="knop knop-lijn">Bid mee</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .oproep { position: relative; color: var(--wit); overflow: hidden; background: var(--nacht); }
+  .oproep-foto {
+    position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 60% 30%;
+    opacity: 0.4;
+  }
+  .oproep::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(90deg, var(--nacht) 35%, rgb(10 35 66 / 0.5));
+  }
+  .oproep-binnen { position: relative; z-index: 1; padding-block: var(--sectie); }
+  .oproep h2 { color: var(--wit); max-width: 14ch; font-size: clamp(2rem, 4.5vw, 3.4rem); }
+  .oproep p { max-width: 32em; color: #d5e0ec; font-size: 1.1rem; }
+  .oproep .oproep-iban {
+    font-family: var(--kop);
+    font-weight: 800;
+    font-size: clamp(1.3rem, 2.5vw, 1.75rem);
+    color: var(--wit);
+    letter-spacing: 0.02em;
+    margin-top: 1.5rem;
+  }
+  .oproep-iban span { display: block; font-weight: 500; font-size: 0.9rem; letter-spacing: 0; color: #9fb2c9; font-family: var(--tekst); }
+</style>

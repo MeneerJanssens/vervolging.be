@@ -1,0 +1,53 @@
+---
+import '@fontsource-variable/montserrat';
+import '@fontsource-variable/literata';
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { site } from '../data/site';
+
+interface Props {
+  titel: string;
+  beschrijving?: string;
+  afbeelding?: string;
+}
+
+const { titel, beschrijving = 'Hulp aan de Verdrukte Kerk (HVK) staat naast christenen die om hun geloof vervolgd worden: met praktische hulp, gebed en een stem in België.', afbeelding } = Astro.props;
+const volleTitel = Astro.url.pathname === '/' ? `${site.naam} | ${site.tagline}` : `${titel} | ${site.kort}`;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogBeeld = afbeelding ? new URL(afbeelding, Astro.site) : new URL('/og-hvk.jpg', Astro.site);
+---
+
+<!doctype html>
+<html lang="nl-BE">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{volleTitel}</title>
+    <meta name="description" content={beschrijving} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.png" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="alternate" hreflang="fr-BE" href={site.fransVersie} />
+    <meta name="theme-color" content="#0a2342" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="nl_BE" />
+    <meta property="og:site_name" content={site.naam} />
+    <meta property="og:title" content={volleTitel} />
+    <meta property="og:description" content={beschrijving} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogBeeld} />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    {import.meta.env.PROD && (
+      <script is:inline data-goatcounter={site.goatcounter} async src="//gc.zgo.at/count.js"></script>
+    )}
+  </head>
+  <body>
+    <a class="skiplink" href="#inhoud">Naar de inhoud</a>
+    <Header />
+    <main id="inhoud">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

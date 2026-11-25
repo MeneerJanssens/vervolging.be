@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.astro/
+.netlify/
+.env
+.DS_Store
+
+# Ruwe kopie van de oude Google Site (alleen lokale referentie)
+_bron/huidige-site/
+_bron/projectfotos/urls.txt

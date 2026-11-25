@@ -1,0 +1,119 @@
+---
+import { Image } from 'astro:assets';
+import { getEntry } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import PaginaKop from '../../components/PaginaKop.astro';
+import VideoSpeler from '../../components/VideoSpeler.astro';
+import OproepSteun from '../../components/OproepSteun.astro';
+import doop from '../../assets/foto/doop-rivier.jpg';
+import wurmbrand from '../../assets/foto/richard-en-sabina-wurmbrand.jpg';
+
+const video = await getEntry('videos', 'kameroen-leven-in-vervolging');
+---
+
+<Base titel="Wie we zijn" beschrijving="Hulp aan de Verdrukte Kerk (HVK) is een interkerkelijke vzw die wereldwijd opkomt voor christenen die om hun geloof vervolgd worden.">
+  <PaginaKop
+    titel="Wie we zijn"
+    intro="Hulp aan de Verdrukte Kerk (HVK) is een interkerkelijke vzw. We staan naast christenen die om hun geloof worden uitgesloten, opgesloten of gedood, en we geven hun stem een plaats in de kerk in België."
+    foto={doop}
+    fotoAlt="Een doop in een rivier, omringd door een grote groep gelovigen"
+  />
+
+  <section class="sectie">
+    <div class="wrap twee">
+      <div class="prose">
+        <h2>Waar we voor staan</h2>
+        <p>
+          Wie Jezus volgt, betaalt daar in veel landen een prijs voor. Soms is dat een baan of een plek in de familie, soms de vrijheid, soms het leven.
+          HVK wil die broers en zussen niet alleen laten. We bieden praktische en geestelijke hulp, en we moedigen hen aan om trouw te blijven aan Christus.
+        </p>
+        <p>
+          Tegelijk geloven we dat hun getuigenis ook ons iets te zeggen heeft. Hun verhalen dagen christenen in België uit om Jezus te volgen en het evangelie te delen, wat het ook kost.
+        </p>
+      </div>
+      <div class="prose">
+        <h2>Wat we geloven</h2>
+        <p>
+          Onze medewerkers en zusterorganisaties geloven dat de Bijbel het betrouwbare Woord van God is, en dat het offer van Jezus Christus de enige weg tot verlossing is.
+          Vanuit dat geloof laten we ons door Hem leiden.
+        </p>
+        <p>
+          We geloven in de eenheid van het lichaam van Christus. Als één lid lijdt, lijden alle leden mee (1 Korintiërs 12:26-27).
+          Daarom zijn christenen in België mee verantwoordelijk voor wie elders om Zijn naam lijdt.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sectie sectie-papier">
+    <div class="wrap">
+      <h2>Hoe we helpen</h2>
+      <p class="inleiding">We werken altijd samen met lokale partners en zusterorganisaties. Zij kennen de situatie ter plaatse en weten wat het meest nodig is.</p>
+      <dl class="hulp">
+        <div>
+          <dt>Medische zorg</dt>
+          <dd>Veel christenen worden mishandeld of aangevallen. We betalen medische hulp, zodat ze kunnen herstellen.</dd>
+        </div>
+        <div>
+          <dt>Gezinnen van gevangenen</dt>
+          <dd>Wie om het geloof in de cel zit, kan zijn gezin niet meer onderhouden. We springen financieel bij, zodat vrouw en kinderen kunnen rondkomen.</dd>
+        </div>
+        <div>
+          <dt>Christenen met een moslimachtergrond</dt>
+          <dd>Wie de islam verlaat, wordt vaak bedreigd door familie of omgeving. We zorgen voor een veilige plek en pastorale begeleiding.</dd>
+        </div>
+        <div>
+          <dt>Bijbels en onderwijs</dt>
+          <dd>We brengen Bijbels naar plaatsen waar ze verboden of schaars zijn, en we ondersteunen de opleiding van voorgangers.</dd>
+        </div>
+      </dl>
+      <p><a href="/ons-werk" class="link-sterk">Bekijk onze projecten</a></p>
+    </div>
+  </section>
+
+  {video && (
+    <section class="sectie">
+      <div class="wrap twee video-rij">
+        <VideoSpeler id={video.data.youtubeId} titel={video.data.titel} thumbnail={video.data.thumbnail} />
+        <div>
+          <h2>{video.data.titel}</h2>
+          <p>{video.data.samenvatting}</p>
+          <a href="/getuigenissen" class="link-sterk">Meer getuigenissen</a>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <section class="sectie sectie-nacht">
+    <div class="wrap twee verhaal">
+      <Image src={wurmbrand} alt="Richard en Sabina Wurmbrand" widths={[400, 700]} sizes="(max-width: 56rem) 100vw, 40vw" />
+      <div>
+        <h2>Hoe het begon</h2>
+        <p>
+          De Roemeense predikant Richard Wurmbrand zat veertien jaar in communistische gevangenissen omdat hij Christus bleef verkondigen.
+          Na zijn vrijlating trok hij met zijn vrouw Sabina de wereld rond om de stem te zijn van wie geen stem had. Uit hun getuigenis groeide ook HVK.
+        </p>
+        <a href="/over-ons/ons-verhaal" class="knop knop-lijn">Lees ons verhaal</a>
+      </div>
+    </div>
+  </section>
+
+  <OproepSteun />
+</Base>
+
+<style>
+  .twee { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2.5rem, 6vw, 5rem); align-items: start; }
+  .twee .prose h2 { margin-top: 0; }
+  .hulp { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr)); gap: 2rem 3rem; margin: 2.5rem 0; }
+  .hulp div { border-top: 2px solid var(--doorn); padding-top: 1rem; }
+  .hulp dt { font-family: var(--kop); font-weight: 800; font-size: 1.2rem; margin-bottom: 0.4rem; }
+  .hulp dd { margin: 0; color: var(--steen); }
+  .video-rij { align-items: center; }
+  .verhaal { align-items: center; grid-template-columns: 0.7fr 1.3fr; }
+  .verhaal img { width: 100%; max-width: 26rem; border-radius: 4px; filter: grayscale(0.2); }
+  .verhaal p { color: #c9d6e5; font-size: 1.1rem; max-width: 34em; }
+  .verhaal .knop { margin-top: 1rem; }
+  @media (max-width: 56rem) {
+    .twee, .verhaal { grid-template-columns: 1fr; }
+  }
+</style>

@@ -1,0 +1,87 @@
+---
+import Base from '../../layouts/Base.astro';
+import PaginaKop from '../../components/PaginaKop.astro';
+import Formulier from '../../components/Formulier.astro';
+import foto from '../../assets/foto/presentatie-kerk.jpg';
+
+const rollen = [
+  { titel: 'Vertaler', tekst: 'Je beheerst een taal goed, bijvoorbeeld Frans of Engels, en helpt ons om verhalen en teksten te vertalen.' },
+  { titel: 'Ambassadeur', tekst: 'Je bent het aanspreekpunt van HVK in je eigen kerk. Je deelt gebedspunten, legt De Stem klaar en houdt vervolgde christenen onder de aandacht.' },
+  { titel: 'Sociale media', tekst: 'Je helpt verhalen van vervolgde christenen te delen op Facebook, Instagram of YouTube.' },
+  { titel: 'Algemeen', tekst: 'Administratie, verzending, events: je zet je talenten in waar ze op dat moment het meest nodig zijn.' },
+];
+---
+
+<Base titel="Vrijwilliger worden" beschrijving="Help Hulp aan de Verdrukte Kerk als vertaler, ambassadeur in je kerk, op sociale media of waar het nodig is.">
+  <PaginaKop
+    titel="Word vrijwilliger"
+    intro="HVK is een kleine organisatie met een groot hart voor de vervolgde kerk. Met een paar uur per maand, van thuis uit of op ons kantoor, maak je echt verschil."
+    foto={foto}
+    fotoAlt="Een spreker vertelt in een kerkzaal over vervolgde christenen"
+  />
+
+  <section class="sectie">
+    <div class="wrap">
+      <h2>Waar we hulp bij zoeken</h2>
+      <ul class="rollen">
+        {rollen.map((r) => (
+          <li>
+            <h3>{r.titel}</h3>
+            <p>{r.tekst}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="sectie sectie-papier">
+    <div class="wrap twee">
+      <div class="prose">
+        <h2>Is dit iets voor jou?</h2>
+        <p>Je hebt een hart voor vervolgde broers en zussen en wilt je talenten en ervaring inzetten. Leeftijd maakt niet uit: jong en oud zijn welkom.</p>
+        <h3>Wat je van ons krijgt</h3>
+        <ul>
+          <li>Een taak die past bij wat je graag doet en goed kunt.</li>
+          <li>Een warm en divers team.</li>
+          <li>Je komt dichter bij vervolgde christenen en hun verhalen te staan.</li>
+        </ul>
+      </div>
+      <div>
+        <h2 id="aanmelden">Meld je aan</h2>
+        <p>Laat je gegevens achter. We nemen contact op voor een kennismaking.</p>
+        <Formulier naam="vrijwilliger" knop="Aanmelding versturen">
+          <div class="rij">
+            <div class="veld"><label for="v-naam">Naam</label><input id="v-naam" name="naam" type="text" required autocomplete="name" /></div>
+            <div class="veld"><label for="v-email">E-mail</label><input id="v-email" name="email" type="email" required autocomplete="email" /></div>
+          </div>
+          <div class="rij">
+            <div class="veld"><label for="v-tel">Telefoon</label><input id="v-tel" name="telefoon" type="tel" autocomplete="tel" /></div>
+            <div class="veld"><label for="v-gemeente">Woonplaats</label><input id="v-gemeente" name="woonplaats" type="text" autocomplete="address-level2" /></div>
+          </div>
+          <fieldset class="veld">
+            <legend>Waar wil je bij helpen?</legend>
+            <div class="keuzes">
+              {rollen.map((r) => (
+                <label class="keuze"><input type="checkbox" name="rol" value={r.titel} /> {r.titel}</label>
+              ))}
+            </div>
+          </fieldset>
+          <div class="veld">
+            <label for="v-bericht">Vertel iets over jezelf</label>
+            <p class="hint" id="v-bericht-hint">Bijvoorbeeld welke talen je spreekt, hoeveel tijd je hebt of in welke kerk je komt.</p>
+            <textarea id="v-bericht" name="bericht" aria-describedby="v-bericht-hint"></textarea>
+          </div>
+        </Formulier>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .rollen { list-style: none; padding: 0; margin: 2rem 0 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); gap: 2rem 2.5rem; }
+  .rollen li { border-top: 2px solid var(--doorn); padding-top: 1rem; }
+  .rollen p { color: var(--steen); }
+  .twee { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: clamp(2.5rem, 6vw, 5rem); align-items: start; }
+  .twee .prose h2 { margin-top: 0; }
+  @media (max-width: 56rem) { .twee { grid-template-columns: 1fr; } }
+</style>

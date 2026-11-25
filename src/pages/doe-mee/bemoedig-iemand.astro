@@ -1,0 +1,82 @@
+---
+import Base from '../../layouts/Base.astro';
+import PaginaKop from '../../components/PaginaKop.astro';
+import Citaat from '../../components/Citaat.astro';
+import foto from '../../assets/foto/gevangen-christenen.webp';
+import { Image } from 'astro:assets';
+import gevangene from '../../assets/foto/gevangene-bhutan.webp';
+
+const lijst = 'https://www.sdok.nl/wat-kan-ik-doen/bemoedig/stuur-een-kaart';
+const tips = 'https://www.sdok.nl/wat-kan-ik-doen/bemoedig/schrijftips';
+---
+
+<Base titel="Schrijf een kaart" beschrijving="Bemoedig een vervolgde christen of een gevangene met een kaart uit België. Zo doe je het veilig.">
+  <PaginaKop
+    titel="Schrijf een kaart"
+    intro="Een kaart uit België kost je een kwartier en een postzegel. Voor een christen in de gevangenis, of voor het gezin dat achterblijft, kan ze het verschil maken."
+    foto={foto}
+    fotoAlt="Christenen achter tralies in verschillende gevangenissen"
+  />
+
+  <section class="sectie">
+    <div class="wrap twee">
+      <div>
+        <h2>Waarom een kaart helpt</h2>
+        <dl class="redenen">
+          <div><dt>Ze laat de overheid zien dat we meekijken</dt><dd>Een stapel post uit het buitenland maakt de autoriteiten duidelijk dat de wereld van deze gevangene weet en om hem of haar geeft.</dd></div>
+          <div><dt>Ze toont liefde</dt><dd>Een kaart is een tastbaar teken dat volgelingen van Jezus wereldwijd bij elkaar horen.</dd></div>
+          <div><dt>Ze herinnert</dt><dd>Wie vastzit, voelt zich vaak alleen. Een kaart zegt: je bent niet vergeten.</dd></div>
+        </dl>
+      </div>
+      <div class="citaat-blok">
+        <Image src={gevangene} alt="Een lachende man, met een zwarte balk over zijn ogen om hem onherkenbaar te maken" widths={[400, 700]} sizes="(max-width: 56rem) 100vw, 40vw" />
+        <Citaat wie="Han" waar="voorganger uit Bhutan">Iedere kaart of brief die een gevangene of zijn familie ontvangt, is een kostbaar geschenk.</Citaat>
+      </div>
+    </div>
+  </section>
+
+  <section class="sectie sectie-papier">
+    <div class="wrap">
+      <h2>Zo schrijf je veilig</h2>
+      <p class="inleiding">Je kaart kan de ontvanger helpen, maar ook in de problemen brengen. Houd je daarom aan deze drie regels.</p>
+      <ul class="regels">
+        <li>
+          <h3>Noem geen organisatie</h3>
+          <p>Vermeld de naam van HVK of een andere organisatie nergens, niet op de kaart en niet op de envelop.</p>
+        </li>
+        <li>
+          <h3>Geef je adres niet</h3>
+          <p>Je naam, de datum en 'Belgium' mag je wel vermelden. Je volledige adres niet.</p>
+        </li>
+        <li>
+          <h3>Schrijf niets beledigends</h3>
+          <p>Vermijd alles wat de autoriteiten als kritiek of belediging kunnen lezen. Schrijf over troost, hoop en gebed.</p>
+        </li>
+      </ul>
+      <p>Meer schrijftips vind je bij onze Nederlandse zusterorganisatie SDOK. <a href={tips} rel="noopener">Bekijk de schrijftips</a>.</p>
+    </div>
+  </section>
+
+  <section class="sectie sectie-nacht">
+    <div class="wrap">
+      <h2>Aan wie kun je schrijven?</h2>
+      <p class="inleiding">SDOK houdt een actuele lijst bij van vervolgde christenen en gevangenen die je kunt bemoedigen, met hun verhaal en adres.</p>
+      <div class="knoppen">
+        <a href={lijst} class="knop knop-doorn" rel="noopener">Bekijk de lijst bij SDOK</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .citaat-blok img { width: 100%; max-width: 30rem; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 4px; margin-bottom: 2.5rem; }
+  .twee { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2.5rem, 6vw, 5rem); align-items: center; }
+  .redenen { margin: 1.5rem 0 0; display: grid; gap: 1.5rem; }
+  .redenen div { border-top: 2px solid var(--doorn); padding-top: 0.9rem; }
+  .redenen dt { font-family: var(--kop); font-weight: 800; font-size: 1.15rem; margin-bottom: 0.3rem; }
+  .redenen dd { margin: 0; color: var(--steen); }
+  .regels { list-style: none; padding: 0; margin: 2rem 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr)); gap: 2rem 3rem; }
+  .regels li { border-top: 2px solid var(--doorn); padding-top: 1rem; }
+  .regels p { color: var(--steen); }
+  @media (max-width: 56rem) { .twee { grid-template-columns: 1fr; } }
+</style>

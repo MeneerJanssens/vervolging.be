@@ -1,0 +1,156 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import PaginaKop from '../../components/PaginaKop.astro';
+import Citaat from '../../components/Citaat.astro';
+import portret from '../../assets/foto/richard-wurmbrand-portret.png';
+import gevangene from '../../assets/foto/richard-wurmbrand-gevangene.png';
+import preek from '../../assets/foto/richard-wurmbrand-preek.jpg';
+import samen from '../../assets/foto/richard-en-sabina-wurmbrand.jpg';
+---
+
+<Base titel="Ons verhaal" beschrijving="Hoe het getuigenis van Richard en Sabina Wurmbrand leidde tot Hulp aan de Verdrukte Kerk in België.">
+  <PaginaKop
+    titel="De stem die de wereld deed opschrikken"
+    intro="Richard Wurmbrand zat veertien jaar in communistische gevangenissen omdat hij Christus bleef verkondigen. Zijn getuigenis staat aan het begin van Hulp aan de Verdrukte Kerk."
+    foto={portret}
+    fotoAlt="Portret van Richard Wurmbrand"
+    fotoPositie="50% 20%"
+    donker
+  />
+
+  <section class="sectie">
+    <div class="wrap">
+      <h2>Richard Wurmbrand (1909–2001)</h2>
+      <ol class="tijdlijn">
+        <li>
+          <span class="jaar">1909</span>
+          <div>
+            <p>Richard Wurmbrand wordt op 24 maart geboren in een Joods gezin in Boekarest, Roemenië. In 1936 trouwt hij met Sabina. Eind jaren dertig komen ze allebei tot geloof in Christus. Ze krijgen een zoon, Mihai.</p>
+          </div>
+        </li>
+        <li>
+          <span class="jaar">1940–1945</span>
+          <div>
+            <p>Roemenië vecht aan de kant van nazi-Duitsland. Richard, inmiddels predikant, deelt het evangelie met Duitse soldaten. Richard en Sabina worden meermaals gearresteerd en mishandeld. Sabina's familie komt om in de concentratiekampen.</p>
+          </div>
+        </li>
+        <li>
+          <span class="jaar">1945</span>
+          <div>
+            <p>De communisten nemen de macht over. Op het Congres van Erediensten beloven geestelijke leiders trouw aan het nieuwe regime. Sabina vraagt Richard om "de schande van het gezicht van Jezus te vegen". Hij weet wat het hem zal kosten, staat op en herinnert de vierduizend aanwezigen eraan dat ze alleen Christus moeten eren.</p>
+          </div>
+        </li>
+        <li>
+          <span class="jaar">1948</span>
+          <div class="met-foto">
+            <p>Op zondagochtend 29 februari arresteert de geheime politie Richard. Hij verdwijnt in eenzame opsluiting, als "gevangene nummer 1".</p>
+            <Image src={gevangene} alt="Politiefoto van Richard Wurmbrand als gevangene, van voren en van opzij" width={640} />
+          </div>
+        </li>
+        <li>
+          <span class="jaar">1950</span>
+          <div>
+            <p>Ook Sabina wordt opgepakt en veroordeeld tot dwangarbeid in de Donaudelta. Hun zoon van negen blijft alleen achter. Als Sabina in 1953 vrijkomt, krijgt ze te horen dat Richard in de gevangenis gestorven is.</p>
+          </div>
+        </li>
+        <li>
+          <span class="jaar">1956</span>
+          <div>
+            <p>Richard leeft wel. Na achtenhalf jaar wordt hij vrijgelaten, zwaar gefolterd en met de strenge waarschuwing nooit meer te preken. Hij begint meteen opnieuw.</p>
+          </div>
+        </li>
+        <li>
+          <span class="jaar">1959</span>
+          <div>
+            <p>Opnieuw gearresteerd, nu veroordeeld tot 25 jaar. Door druk uit het Westen komt hij in 1964 vervroegd vrij.</p>
+          </div>
+        </li>
+        <li>
+          <span class="jaar">1965</span>
+          <div class="met-foto">
+            <p>In december kopen westerse christenen het gezin Wurmbrand voor 10.000 dollar vrij. De geheime politie waarschuwt Richard nog één keer om te zwijgen. Hij doet het niet. In Europa en Amerika vertellen Richard en Sabina wat christenen in communistische landen doorstaan. Richards boek <em>Gemarteld om Christus' wil</em> gaat de hele wereld rond. Sabina schrijft <em>Richards vrouw</em>.</p>
+            <Image src={preek} alt="Richard Wurmbrand spreekt vurig achter een spreekgestoelte" width={640} />
+          </div>
+        </li>
+        <li>
+          <span class="jaar">2000–2001</span>
+          <div>
+            <p>Sabina overlijdt op 11 augustus 2000, Richard op 17 februari 2001. Tot op hoge leeftijd bleven ze zich inzetten voor de vervolgde kerk.</p>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="sectie sectie-papier">
+    <div class="wrap twee">
+      <Citaat wie="Richard Wurmbrand">Ik zou niet in de Bijbel geloven als het niet de moeite waard was om hem met het grootste risico overal binnen te smokkelen.</Citaat>
+      <Image src={samen} alt="Richard en Sabina Wurmbrand, lachend samen" widths={[400, 700]} sizes="(max-width: 56rem) 100vw, 40vw" class="samen" />
+    </div>
+  </section>
+
+  <section class="sectie">
+    <div class="wrap">
+      <h2>Van stichting tot HVK</h2>
+      <p class="inleiding">
+        Overal waar de Wurmbrands spraken, wilden mensen iets doen. Richard moedigde dat aan. Zo ontstonden Wurmbrand-stichtingen in Europa, Canada, Australië, Brazilië en elders. Samen vormen ze vandaag de International Christian Association (ICA).
+      </p>
+      <ol class="tijdlijn">
+        <li>
+          <span class="jaar">1971</span>
+          <div><p>Op 26 oktober start de Hongaar Jozsef Verteties, op initiatief van de Duitse zending HMK, in Verviers de Vereniging voor de Stille Kerk. Ze steunt christenen in landen waar ze vervolgd worden.</p></div>
+        </li>
+        <li>
+          <span class="jaar">1974</span>
+          <div><p>Na een lezing van Richard Wurmbrand in België nemen Nestor en Yvette Vandenberghe de leiding over. Ze versturen de eerste Vlaamse nieuwsbrieven.</p></div>
+        </li>
+        <li>
+          <span class="jaar">1981</span>
+          <div><p>De vzw Christelijke Bond Ondergrondse Kerk wordt officieel opgericht. Het werk richt zich vooral op christenen in het Oostblok.</p></div>
+        </li>
+        <li>
+          <span class="jaar">1993</span>
+          <div><p>De vereniging krijgt haar huidige naam: Hulp aan de Verdrukte Kerk.</p></div>
+        </li>
+        <li>
+          <span class="jaar">Vandaag</span>
+          <div><p>HVK steunt vervolgde christenen in Afrika, Azië en het Midden-Oosten, en brengt hun verhalen naar kerken in heel België. Met dezelfde vastberadenheid als de Wurmbrands willen we naast onze broers en zussen staan.</p></div>
+        </li>
+      </ol>
+      <div class="knoppen">
+        <a href="/ons-werk" class="knop knop-blauw">Ons werk vandaag</a>
+        <a href="/over-ons/vrijwilliger-worden" class="knop knop-lijn">Word vrijwilliger</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .tijdlijn { list-style: none; margin: 2.5rem 0 0; padding: 0; max-width: 56rem; }
+  .tijdlijn li {
+    display: grid;
+    grid-template-columns: 9rem 1fr;
+    gap: 2rem;
+    padding: 1.5rem 0;
+    border-top: 1px solid var(--lijn);
+  }
+  .jaar {
+    font-family: var(--kop);
+    font-weight: 800;
+    font-size: 1.5rem;
+    letter-spacing: -0.02em;
+    color: var(--doorn);
+    line-height: 1.2;
+  }
+  .tijdlijn p { max-width: 36em; }
+  .met-foto img { margin-top: 1.25rem; width: 100%; max-width: 26rem; border-radius: 3px; filter: grayscale(0.15); }
+  .twee { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: clamp(2.5rem, 6vw, 5rem); align-items: center; }
+  .samen { width: 100%; border-radius: 4px; }
+  @media (max-width: 40rem) {
+    .tijdlijn li { grid-template-columns: 1fr; gap: 0.5rem; }
+  }
+  @media (max-width: 56rem) {
+    .twee { grid-template-columns: 1fr; }
+  }
+</style>

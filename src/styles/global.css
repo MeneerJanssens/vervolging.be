@@ -1,0 +1,199 @@
+/* ------------------------------------------------------------
+   HVK — huisstijl
+   Kleuren rechtstreeks uit het logo: wereldblauw en doornenrood.
+   Montserrat (zoals "STEM" in het logo) voor koppen,
+   Literata voor lopende tekst: de verhalen moeten lezen als verhalen.
+   ------------------------------------------------------------ */
+
+:root {
+  --blauw: #005da8;
+  --blauw-donker: #004580;
+  --doorn: #bd0651;
+  --doorn-donker: #96043f;
+  --nacht: #0a2342;
+  --nacht-licht: #13325a;
+  --papier: #f3f5f8;
+  --wit: #ffffff;
+  --inkt: #17212e;
+  --steen: #556274;
+  --lijn: #d8dee6;
+
+  --kop: 'Montserrat Variable', 'Montserrat', system-ui, sans-serif;
+  --tekst: 'Literata Variable', 'Literata', Georgia, serif;
+
+  --maat: 1.0625rem;
+  --breed: 76rem;
+  --smal: 42rem;
+  --rand: clamp(1.25rem, 4vw, 3rem);
+  --sectie: clamp(4rem, 9vw, 7.5rem);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-padding-top: 6rem;
+}
+
+body {
+  margin: 0;
+  font-family: var(--tekst);
+  font-size: var(--maat);
+  line-height: 1.7;
+  color: var(--inkt);
+  background: var(--wit);
+  font-optical-sizing: auto;
+}
+
+img, svg, video { display: block; max-width: 100%; height: auto; }
+
+h1, h2, h3, h4 {
+  font-family: var(--kop);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin: 0 0 0.6em;
+  text-wrap: balance;
+}
+h1 { font-size: clamp(2.4rem, 5.5vw, 4.25rem); font-weight: 800; }
+h2 { font-size: clamp(1.75rem, 3.4vw, 2.6rem); font-weight: 800; }
+h3 { font-size: 1.3rem; font-weight: 700; letter-spacing: -0.01em; }
+h4 { font-size: 1.05rem; font-weight: 700; letter-spacing: 0; }
+
+p { margin: 0 0 1.1em; text-wrap: pretty; }
+p:last-child { margin-bottom: 0; }
+
+a { color: var(--blauw); text-underline-offset: 0.18em; text-decoration-thickness: 1px; }
+a:hover { color: var(--doorn); }
+
+:focus-visible {
+  outline: 3px solid var(--doorn);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+::selection { background: var(--doorn); color: var(--wit); }
+
+/* ---------- Opbouw ---------- */
+
+.wrap { width: min(100% - 2 * var(--rand), var(--breed)); margin-inline: auto; }
+.wrap-smal { width: min(100% - 2 * var(--rand), var(--smal)); margin-inline: auto; }
+
+.sectie { padding-block: var(--sectie); }
+.sectie-papier { background: var(--papier); }
+.sectie-nacht { background: var(--nacht); color: #e8eef6; }
+.sectie-nacht h2, .sectie-nacht h3 { color: var(--wit); }
+.sectie-nacht a:not(.knop) { color: #9cc7ef; }
+
+.inleiding {
+  font-size: clamp(1.15rem, 1.6vw, 1.3rem);
+  line-height: 1.6;
+  color: var(--steen);
+  max-width: 38em;
+}
+.sectie-nacht .inleiding { color: #b9c8db; }
+
+.prose { max-width: 38em; }
+.prose h2 { margin-top: 1.8em; font-size: clamp(1.5rem, 2.6vw, 2rem); }
+.prose h3 { margin-top: 1.6em; }
+.prose ul, .prose ol { padding-left: 1.2em; margin: 0 0 1.2em; }
+.prose li { margin-bottom: 0.5em; }
+.prose li::marker { color: var(--doorn); }
+
+/* ---------- Knoppen ---------- */
+
+.knop {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  font-family: var(--kop);
+  font-weight: 700;
+  font-size: 0.98rem;
+  line-height: 1;
+  padding: 1em 1.5em;
+  border-radius: 999px;
+  border: 2px solid transparent;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+}
+.knop-doorn { background: var(--doorn); color: var(--wit); }
+.knop-doorn:hover { background: var(--doorn-donker); color: var(--wit); }
+.knop-blauw { background: var(--blauw); color: var(--wit); }
+.knop-blauw:hover { background: var(--blauw-donker); color: var(--wit); }
+.knop-lijn { border-color: currentColor; color: var(--blauw); background: transparent; }
+.knop-lijn:hover { background: var(--blauw); border-color: var(--blauw); color: var(--wit); }
+.sectie-nacht .knop-lijn, .op-donker .knop-lijn { color: var(--wit); }
+.sectie-nacht .knop-lijn:hover, .op-donker .knop-lijn:hover { background: var(--wit); color: var(--nacht); border-color: var(--wit); }
+
+.knoppen { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 2rem; }
+
+/* ---------- Tekstlink met pijl-onderstreping ---------- */
+.link-sterk {
+  font-family: var(--kop);
+  font-weight: 700;
+  font-size: 0.98rem;
+  color: var(--blauw);
+  text-decoration: underline;
+  text-decoration-color: var(--doorn);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.35em;
+}
+.link-sterk:hover { color: var(--doorn); }
+
+/* ---------- Formulieren ---------- */
+
+.formulier { display: grid; gap: 1.25rem; max-width: 40rem; }
+.formulier .rij { display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr)); }
+.veld { display: grid; gap: 0.4rem; }
+.veld label, .veld legend {
+  font-family: var(--kop);
+  font-weight: 600;
+  font-size: 0.92rem;
+}
+.veld .hint { font-size: 0.88rem; color: var(--steen); margin: 0; }
+.veld input[type='text'],
+.veld input[type='email'],
+.veld input[type='tel'],
+.veld input[type='date'],
+.veld input[type='number'],
+.veld select,
+.veld textarea {
+  font: inherit;
+  font-size: 1rem;
+  padding: 0.8em 0.9em;
+  border: 1.5px solid #b9c3cf;
+  border-radius: 6px;
+  background: var(--wit);
+  color: var(--inkt);
+  width: 100%;
+}
+.veld textarea { min-height: 8rem; resize: vertical; }
+.veld input:focus, .veld select:focus, .veld textarea:focus {
+  outline: none;
+  border-color: var(--blauw);
+  box-shadow: 0 0 0 3px rgb(0 93 168 / 0.2);
+}
+fieldset.veld { border: 0; padding: 0; margin: 0; }
+.keuzes { display: grid; gap: 0.5rem; }
+.keuze { display: flex; gap: 0.65rem; align-items: flex-start; font-size: 1rem; }
+.keuze input { margin-top: 0.35em; accent-color: var(--doorn); width: 1.1rem; height: 1.1rem; flex: none; }
+.verborgen { position: absolute; left: -9999px; }
+.privacy-noot { font-size: 0.88rem; color: var(--steen); }
+
+/* ---------- Toegankelijkheid ---------- */
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+.skiplink {
+  position: absolute; left: 1rem; top: -4rem; z-index: 100;
+  background: var(--doorn); color: var(--wit); padding: 0.75rem 1rem;
+  font-family: var(--kop); font-weight: 700; border-radius: 6px;
+}
+.skiplink:focus { top: 1rem; color: var(--wit); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}

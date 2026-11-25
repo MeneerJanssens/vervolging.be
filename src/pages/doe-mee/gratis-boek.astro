@@ -1,0 +1,77 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import PaginaKop from '../../components/PaginaKop.astro';
+import Formulier from '../../components/Formulier.astro';
+
+const boeken = (await getCollection('boeken', (b) => b.data.beschikbaar)).sort((a, b) => a.data.volgorde - b.data.volgorde);
+const metInhoud = await Promise.all(boeken.map(async (b) => ({ ...b, Inhoud: (await render(b)).Content })));
+---
+
+<Base titel="Gratis boek" beschrijving="Vraag gratis een boek aan met verhalen van vervolgde christenen. Een sponsor betaalt boek en verzending.">
+  <PaginaKop
+    titel="Een gratis boek, echt"
+    intro="Dankzij een sponsor sturen we je een boek met verhalen van vervolgde christenen, inclusief verzending, volledig gratis. Je zit nergens aan vast."
+  />
+
+  <section class="sectie">
+    <div class="wrap boeken">
+      {metInhoud.map((b) => (
+        <article class="boek">
+          {b.data.cover && <Image src={b.data.cover} alt={`Cover van ${b.data.titel}`} width={320} class="boek-cover" />}
+          <div class="prose">
+            <h2>{b.data.titel}</h2>
+            {b.data.auteur && <p class="auteur">{b.data.auteur}</p>}
+            <b.Inhoud />
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="sectie sectie-papier" id="aanvragen">
+    <div class="wrap twee">
+      <div>
+        <h2>Vraag je boek aan</h2>
+        <p>We versturen het boek per post. Wil je ons werk steunen na het lezen, dan is een gift welkom, maar nooit verplicht.</p>
+      </div>
+      <Formulier naam="boek-aanvraag" knop="Boek aanvragen">
+        <fieldset class="veld">
+          <legend>Welk boek wil je ontvangen?</legend>
+          <div class="keuzes">
+            {boeken.map((b, i) => (
+              <label class="keuze"><input type="radio" name="boek" value={b.data.titel} required checked={i === 0} /> {b.data.titel}</label>
+            ))}
+          </div>
+        </fieldset>
+        <div class="rij">
+          <div class="veld"><label for="b-naam">Naam</label><input id="b-naam" name="naam" type="text" required autocomplete="name" /></div>
+          <div class="veld"><label for="b-email">E-mail</label><input id="b-email" name="email" type="email" required autocomplete="email" /></div>
+        </div>
+        <div class="veld"><label for="b-straat">Straat en huisnummer</label><input id="b-straat" name="straat" type="text" required autocomplete="street-address" /></div>
+        <div class="rij">
+          <div class="veld"><label for="b-postcode">Postcode</label><input id="b-postcode" name="postcode" type="text" required autocomplete="postal-code" /></div>
+          <div class="veld"><label for="b-gemeente">Gemeente</label><input id="b-gemeente" name="gemeente" type="text" required autocomplete="address-level2" /></div>
+        </div>
+        <label class="keuze"><input type="checkbox" name="ook-de-stem" value="ja" /> Stuur me ook gratis het tijdschrift De Stem</label>
+      </Formulier>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .boeken { display: grid; gap: clamp(3rem, 6vw, 5rem); }
+  .boek { display: grid; grid-template-columns: 14rem 1fr; gap: clamp(2rem, 5vw, 4rem); align-items: start; }
+  .boek-cover { width: 100%; }
+  .boek h2 { margin-top: 0; }
+  .auteur { font-family: var(--kop); font-weight: 600; color: var(--steen); margin-top: -0.5rem; }
+  .boek:not(:has(.boek-cover)) { grid-template-columns: 1fr; padding-left: calc(14rem + clamp(2rem, 5vw, 4rem)); }
+  .twee { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: clamp(2.5rem, 6vw, 5rem); align-items: start; }
+  @media (max-width: 56rem) {
+    .twee { grid-template-columns: 1fr; }
+    .boek { grid-template-columns: 9rem 1fr; }
+    .boek:not(:has(.boek-cover)) { padding-left: 0; }
+  }
+  @media (max-width: 36rem) { .boek { grid-template-columns: 1fr; } .boek-cover { max-width: 12rem; } }
+</style>

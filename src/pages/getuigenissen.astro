@@ -1,0 +1,54 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import PaginaKop from '../components/PaginaKop.astro';
+import VideoSpeler from '../components/VideoSpeler.astro';
+import { site } from '../data/site';
+
+const videos = (await getCollection('videos')).sort((a, b) => a.data.volgorde - b.data.volgorde);
+const [eerste, ...rest] = videos;
+---
+
+<Base titel="Getuigenissen" beschrijving="Documentaires en getuigenissen van vervolgde christenen, van Kameroen tot Noord-Korea en Brussel in 1523.">
+  <PaginaKop
+    titel="Getuigenissen"
+    intro="Christenen die om hun geloof vervolgd worden, vertellen in hun eigen woorden wat ze meemaakten, en hoe God hen droeg."
+    donker
+  />
+
+  {eerste && (
+    <section class="sectie">
+      <div class="wrap uitgelicht">
+        <VideoSpeler id={eerste.data.youtubeId} titel={eerste.data.titel} thumbnail={eerste.data.thumbnail} />
+        <div>
+          <h2>{eerste.data.titel}</h2>
+          <p>{eerste.data.samenvatting}</p>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <section class="sectie sectie-papier">
+    <div class="wrap">
+      <ul class="videos">
+        {rest.map((v) => (
+          <li>
+            <VideoSpeler id={v.data.youtubeId} titel={v.data.titel} thumbnail={v.data.thumbnail} />
+            <h2>{v.data.titel}</h2>
+            <p>{v.data.samenvatting}</p>
+          </li>
+        ))}
+      </ul>
+      {site.youtube && <p class="meer"><a href={site.youtube} class="link-sterk" rel="noopener">Alle video's op ons YouTube-kanaal</a></p>}
+    </div>
+  </section>
+</Base>
+
+<style>
+  .uitgelicht { display: grid; grid-template-columns: 1.4fr 1fr; gap: clamp(2rem, 5vw, 4rem); align-items: center; }
+  .videos { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 22rem), 1fr)); gap: 3rem 2.5rem; }
+  .videos h2 { font-size: 1.3rem; margin-top: 1.25rem; }
+  .videos p { color: var(--steen); font-size: 1rem; }
+  .meer { margin-top: 3rem; }
+  @media (max-width: 56rem) { .uitgelicht { grid-template-columns: 1fr; } }
+</style>

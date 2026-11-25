@@ -1,0 +1,88 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import PaginaKop from '../components/PaginaKop.astro';
+import VideoSpeler from '../components/VideoSpeler.astro';
+
+const vandaag = new Date();
+vandaag.setHours(0, 0, 0, 0);
+const alle = await getCollection('evenementen', (e) => !e.data.concept);
+const komend = alle.filter((e) => (e.data.einddatum ?? e.data.datum) >= vandaag).sort((a, b) => +a.data.datum - +b.data.datum);
+const voorbij = alle.filter((e) => (e.data.einddatum ?? e.data.datum) < vandaag).sort((a, b) => +b.data.datum - +a.data.datum);
+
+const videos = await getCollection('videos');
+const videoVoor = (id?: string) => (id ? videos.find((v) => v.data.youtubeId === id) : undefined);
+
+const fmt = (d: Date) => d.toLocaleDateString('nl-BE', { day: 'numeric', month: 'long', year: 'numeric' });
+const periode = (a: Date, b?: Date) => (b ? `${a.getDate()} en ${fmt(b)}` : fmt(a));
+---
+
+<Base titel="Agenda" beschrijving="Komende bijeenkomsten van Hulp aan de Verdrukte Kerk en een terugblik op eerdere evenementen.">
+  <PaginaKop titel="Agenda" intro="Bijeenkomsten waar vervolgde christenen zelf aan het woord komen. Kom luisteren, bidden en ontmoeten." />
+
+  <section class="sectie">
+    <div class="wrap">
+      <h2>Binnenkort</h2>
+      {komend.length === 0 ? (
+        <p class="leeg">Er staan op dit moment geen evenementen gepland. Wil je HVK uitnodigen in je kerk? <a href="/doe-mee/nodig-ons-uit">Vraag een presentatie aan</a>.</p>
+      ) : (
+        <ul class="events">
+          {komend.map((e) => (
+            <li class="event komend">
+              <p class="datum">{periode(e.data.datum, e.data.einddatum)}</p>
+              <div>
+                <h3>{e.data.titel}</h3>
+                {e.data.plaats && <p class="plaats">{e.data.plaats}</p>}
+                <p>{e.data.samenvatting}</p>
+                {e.data.link && <a href={e.data.link} class="knop knop-doorn">{e.data.linkTekst ?? 'Meer info'}</a>}
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  </section>
+
+  {voorbij.length > 0 && (
+    <section class="sectie sectie-papier">
+      <div class="wrap">
+        <h2>Terugblik</h2>
+        <ul class="events">
+          {voorbij.map((e) => {
+            const v = videoVoor(e.data.video);
+            return (
+              <li class="event">
+                <p class="datum">{periode(e.data.datum, e.data.einddatum)}</p>
+                <div class:list={{ 'met-media': v || e.data.foto }}>
+                  <div>
+                    <h3>{e.data.titel}</h3>
+                    {e.data.plaats && <p class="plaats">{e.data.plaats}</p>}
+                    <p>{e.data.samenvatting}</p>
+                  </div>
+                  {v ? <VideoSpeler id={v.data.youtubeId} titel={v.data.titel} thumbnail={v.data.thumbnail} />
+                    : e.data.foto && <Image src={e.data.foto} alt={e.data.fotoAlt ?? ''} widths={[400, 700]} sizes="30vw" />}
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    </section>
+  )}
+</Base>
+
+<style>
+  .events { list-style: none; padding: 0; margin: 2rem 0 0; }
+  .event { display: grid; grid-template-columns: 13rem 1fr; gap: 2rem; padding: 2rem 0; border-top: 1px solid var(--lijn); }
+  .datum { font-family: var(--kop); font-weight: 800; font-size: 1.25rem; line-height: 1.25; color: var(--doorn); }
+  .event h3 { font-size: 1.5rem; }
+  .plaats { font-family: var(--kop); font-weight: 600; color: var(--steen); margin-top: -0.5rem; }
+  .event .knop { margin-top: 1rem; }
+  .met-media { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start; }
+  .met-media img { width: 100%; border-radius: 3px; }
+  .leeg { color: var(--steen); }
+  @media (max-width: 56rem) {
+    .event, .met-media { grid-template-columns: 1fr; gap: 0.75rem; }
+  }
+</style>

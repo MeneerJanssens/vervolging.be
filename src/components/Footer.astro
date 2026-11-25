@@ -1,0 +1,110 @@
+---
+import { Image } from 'astro:assets';
+import stemLogo from '../assets/logo/de-stem-logo.webp';
+import { site } from '../data/site';
+const jaar = new Date().getFullYear();
+---
+
+<footer class="voet">
+  <div class="wrap voet-raster">
+    <div class="voet-merk">
+      <Image src={stemLogo} alt="HVK, de stem van vervolgde christenen" width={320} class="voet-logo" />
+      <p>
+        {site.naam} {site.rechtsvorm}<br />
+        {site.adres.straat}, {site.adres.postcode} {site.adres.gemeente}<br />
+        <a href={`mailto:${site.email}`}>{site.email}</a>
+        {site.ondernemingsnummer && <><br />Ondernemingsnummer {site.ondernemingsnummer}</>}
+      </p>
+    </div>
+
+    <div>
+      <h2 class="voet-kop">Doe mee</h2>
+      <ul>
+        <li><a href="/doe-mee/bid-mee">Bid mee</a></li>
+        <li><a href="/doe-mee/bemoedig-iemand">Schrijf een kaart</a></li>
+        <li><a href="/doe-mee/nodig-ons-uit">Nodig ons uit</a></li>
+        <li><a href="/over-ons/vrijwilliger-worden">Word vrijwilliger</a></li>
+        <li><a href="/de-stem#abonneren">Ontvang De Stem</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h2 class="voet-kop">HVK</h2>
+      <ul>
+        <li><a href="/over-ons">Wie we zijn</a></li>
+        <li><a href="/ons-werk">Ons werk</a></li>
+        <li><a href="/agenda">Agenda</a></li>
+        <li><a href="/contact">Contact</a></li>
+        <li><a href={site.facebook} rel="noopener">Facebook</a></li>
+        <li><a href={site.fransVersie} lang="fr">Version française</a></li>
+      </ul>
+    </div>
+
+    <div class="voet-gift">
+      <h2 class="voet-kop">Geef</h2>
+      <p>
+        Op rekening van {site.naam}<br />
+        <strong class="iban">{site.iban}</strong><br />
+        BIC {site.bic}
+      </p>
+      <a href="/steun-ons" class="knop knop-doorn">Steun ons</a>
+    </div>
+  </div>
+
+  <div class="wrap voet-onder">
+    <p>© {jaar} {site.naam} {site.rechtsvorm}</p>
+    <p><a href="/privacy">Privacyverklaring</a></p>
+  </div>
+</footer>
+
+<style>
+  .voet {
+    background: var(--nacht);
+    color: #c4d1e1;
+    padding-top: clamp(3.5rem, 7vw, 5.5rem);
+    font-size: 0.97rem;
+  }
+  .voet a { color: #e6edf6; text-decoration: none; }
+  .voet a:hover { color: var(--wit); text-decoration: underline; }
+  .voet-raster {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr 1fr 1.3fr;
+    gap: 2.5rem;
+  }
+  .voet-logo {
+    width: 15rem;
+    background: var(--wit);
+    padding: 0.6rem 0.9rem;
+    border-radius: 8px;
+    margin-bottom: 1.25rem;
+  }
+  .voet-kop {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--wit);
+    letter-spacing: 0;
+    margin-bottom: 1rem;
+  }
+  .voet ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.45rem; }
+  .iban { font-family: var(--kop); color: var(--wit); font-size: 1.1rem; letter-spacing: 0.02em; }
+  .voet-gift .knop { margin-top: 1.25rem; }
+  .voet-gift .knop:hover { color: var(--wit); text-decoration: none; }
+  .voet-onder {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 3.5rem;
+    padding-block: 1.5rem 2rem;
+    border-top: 1px solid var(--nacht-licht);
+    font-size: 0.88rem;
+    color: #8fa2ba;
+  }
+  @media (max-width: 60rem) {
+    .voet-raster { grid-template-columns: 1fr 1fr; }
+    .voet-merk { grid-column: 1 / -1; }
+  }
+  @media (max-width: 34rem) {
+    .voet-raster { grid-template-columns: 1fr; }
+  }
+</style>

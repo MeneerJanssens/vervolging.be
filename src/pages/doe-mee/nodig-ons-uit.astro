@@ -1,0 +1,81 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import PaginaKop from '../../components/PaginaKop.astro';
+import Formulier from '../../components/Formulier.astro';
+import groot from '../../assets/foto/presentatie-groot-scherm.webp';
+import kinderen from '../../assets/foto/kinderen-ballonnen.jpg';
+import kerk from '../../assets/foto/presentatie-kerk.jpg';
+
+const doelgroepen = [
+  { titel: 'Kerken en verenigingen', tekst: 'Een dienst, gebedsavond of verenigingsavond over vervolgde christenen. We delen hun getuigenissen om je gemeente te bemoedigen en uit te dagen.', foto: kerk, alt: 'Een spreker vertelt in een kerkzaal' },
+  { titel: 'Jongeren', tekst: 'Op jeugdavonden, kampen of in de klas. Interactief, met veel ruimte voor gesprek. Het verhaal van een leeftijdsgenoot die om zijn geloof vervolgd wordt, zet jongeren aan het denken.', foto: groot, alt: 'Een presentatie van HVK voor een volle zaal' },
+  { titel: 'Kinderen', tekst: 'Vervolging is een moeilijk onderwerp voor kinderen. We maken het begrijpelijk zonder het te zwaar te maken, door de ogen van kinderen elders in de wereld.', foto: kinderen, alt: 'Kinderen met ballonnen met de boodschap God houdt van jou' },
+];
+---
+
+<Base titel="Nodig ons uit" beschrijving="Een presentatie, gastles of workshop over vervolgde christenen in je kerk, jeugdgroep of school.">
+  <PaginaKop
+    titel="Nodig ons uit"
+    intro="Zoek je een inspirerend onderwerp voor je kerk, vereniging of school? Onze medewerkers komen graag vertellen over vervolgde christenen, en over wat hun verhaal ons hier te zeggen heeft."
+  />
+
+  <section class="sectie">
+    <div class="wrap">
+      <ul class="groepen">
+        {doelgroepen.map((d) => (
+          <li>
+            <Image src={d.foto} alt={d.alt} widths={[400, 700]} sizes="(max-width: 56rem) 100vw, 33vw" />
+            <h2>{d.titel}</h2>
+            <p>{d.tekst}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="sectie sectie-papier" id="aanvragen">
+    <div class="wrap twee">
+      <div>
+        <h2>Vraag een presentatie aan</h2>
+        <p>Vertel ons wat je in gedachten hebt. We nemen contact op om samen de invulling te bekijken.</p>
+      </div>
+      <Formulier naam="uitnodiging" knop="Aanvraag versturen">
+        <div class="rij">
+          <div class="veld"><label for="u-naam">Naam</label><input id="u-naam" name="naam" type="text" required autocomplete="name" /></div>
+          <div class="veld"><label for="u-org">Kerk, school of organisatie</label><input id="u-org" name="organisatie" type="text" required /></div>
+        </div>
+        <div class="rij">
+          <div class="veld"><label for="u-email">E-mail</label><input id="u-email" name="email" type="email" required autocomplete="email" /></div>
+          <div class="veld"><label for="u-tel">Telefoon</label><input id="u-tel" name="telefoon" type="tel" autocomplete="tel" /></div>
+        </div>
+        <div class="rij">
+          <div class="veld">
+            <label for="u-groep">Voor wie?</label>
+            <select id="u-groep" name="doelgroep">
+              <option>Volwassenen</option>
+              <option>Jongeren</option>
+              <option>Kinderen</option>
+              <option>Gemengd</option>
+            </select>
+          </div>
+          <div class="veld"><label for="u-gemeente">Gemeente</label><input id="u-gemeente" name="gemeente" type="text" /></div>
+        </div>
+        <div class="veld">
+          <label for="u-datum">Gewenste datum of periode</label>
+          <input id="u-datum" name="datum" type="text" placeholder="bijvoorbeeld een zondag in maart" />
+        </div>
+        <div class="veld"><label for="u-bericht">Je vraag</label><textarea id="u-bericht" name="bericht"></textarea></div>
+      </Formulier>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .groepen { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 3rem 2.5rem; }
+  .groepen img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; border-radius: 3px; margin-bottom: 1.25rem; }
+  .groepen h2 { font-size: 1.5rem; }
+  .groepen p { color: var(--steen); }
+  .twee { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: clamp(2.5rem, 6vw, 5rem); align-items: start; }
+  @media (max-width: 56rem) { .groepen, .twee { grid-template-columns: 1fr; } }
+</style>

@@ -1,0 +1,91 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import PaginaKop from '../components/PaginaKop.astro';
+import OproepSteun from '../components/OproepSteun.astro';
+import bouwen from '../assets/foto/bouwen.jpg';
+
+const alle = await getCollection('projecten');
+const lopend = alle.filter((p) => p.data.status === 'lopend').sort((a, b) => a.data.volgorde - b.data.volgorde);
+const afgerond = alle.filter((p) => p.data.status === 'afgerond');
+const jaren = [...new Set(afgerond.map((p) => p.data.jaar))].sort((a, b) => b - a);
+---
+
+<Base titel="Ons werk" beschrijving="De projecten waarmee Hulp aan de Verdrukte Kerk vervolgde christenen steunt, in Afrika, Azië en het Midden-Oosten.">
+  <PaginaKop
+    titel="Ons werk"
+    intro="We helpen vervolgde christenen via lokale partners die we vertrouwen. Zij weten wat er nodig is, en zij zorgen dat de hulp terechtkomt bij wie ze nodig heeft."
+    foto={bouwen}
+    fotoAlt="Handen strijken vers beton glad bij een bouwproject"
+  />
+
+  <section class="sectie">
+    <div class="wrap">
+      <h2>Lopende projecten</h2>
+      <div class="projecten">
+        {lopend.map((p) => (
+          <article class:list={['project', { 'met-foto': p.data.foto }]}>
+            {p.data.foto && (
+              <figure>
+                <Image src={p.data.foto} alt={p.data.fotoAlt ?? ''} widths={[400, 700]} sizes="(max-width: 56rem) 100vw, 30vw" />
+                {p.data.fotoIllustratie && <figcaption>Beeld ter illustratie</figcaption>}
+              </figure>
+            )}
+            <div>
+              <h3><span class="land">{p.data.land}</span> {p.data.titel}</h3>
+              <p>{p.data.samenvatting}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+      <p class="noot">Om veiligheidsredenen noemen we geen namen van partners of exacte plaatsen.</p>
+    </div>
+  </section>
+
+  {jaren.map((jaar) => (
+    <section class="sectie sectie-papier archief">
+      <div class="wrap">
+        <h2>Gesteund in {jaar}</h2>
+        <ul class="archief-lijst">
+          {afgerond.filter((p) => p.data.jaar === jaar).sort((a, b) => a.data.volgorde - b.data.volgorde).map((p) => (
+            <li>
+              <span class="land">{p.data.land}</span>
+              <span class="titel">{p.data.titel}</span>
+              <p>{p.data.samenvatting}</p>
+              {p.data.leesMeer
+                ? <a href={p.data.leesMeer} class="link-sterk" rel="noopener">Lees het verhaal in De Stem</a>
+                : <span class="binnenkort">Binnenkort in De Stem</span>}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  ))}
+
+  <OproepSteun titel="Steun deze christenen via HVK" />
+</Base>
+
+<style>
+  .projecten { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 22rem), 1fr)); gap: 2.5rem 3rem; margin-top: 2rem; }
+  .project { border-top: 2px solid var(--doorn); padding-top: 1.25rem; }
+  .project figure { margin: 0 0 1.25rem; position: relative; }
+  .project figcaption { position: absolute; right: 0.5rem; bottom: 0.5rem; background: rgb(10 35 66 / 0.75); color: var(--wit); font-family: var(--kop); font-size: 0.72rem; padding: 0.2rem 0.5rem; border-radius: 3px; }
+  .project img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; border-radius: 3px; }
+  .project h3 { font-size: 1.05rem; font-weight: 600; color: var(--steen); letter-spacing: 0; }
+  .project .land {
+    display: block;
+    font-weight: 800;
+    font-size: clamp(1.6rem, 2.6vw, 2rem);
+    letter-spacing: -0.03em;
+    color: var(--blauw);
+    margin-bottom: 0.2rem;
+  }
+  .noot { margin-top: 3rem; color: var(--steen); font-size: 0.95rem; }
+  .archief-lijst { list-style: none; padding: 0; margin: 2rem 0 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr)); gap: 2rem 3rem; }
+  .archief-lijst li { border-top: 1px solid #c5ced9; padding-top: 1rem; }
+  .archief-lijst .land { display: block; font-family: var(--kop); font-weight: 800; font-size: 1.35rem; color: var(--inkt); }
+  .archief-lijst .titel { display: block; font-family: var(--kop); font-weight: 600; font-size: 0.95rem; color: var(--steen); margin-bottom: 0.5rem; }
+  .archief-lijst p { font-size: 0.98rem; margin-bottom: 0.75rem; }
+  .binnenkort { font-family: var(--kop); font-size: 0.9rem; color: var(--steen); }
+</style>

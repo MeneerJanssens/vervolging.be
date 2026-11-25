@@ -1,0 +1,16 @@
+---
+// Netlify Forms: Netlify herkent dit formulier automatisch bij het deployen.
+// Inzendingen verschijnen in Netlify onder "Forms" en kunnen per e-mail doorgestuurd worden.
+interface Props { naam: string; knop: string; bedankt?: string }
+const { naam, knop, bedankt = '/bedankt' } = Astro.props;
+---
+
+<form class="formulier" name={naam} method="POST" action={bedankt} data-netlify="true" netlify-honeypot="adres-website">
+  <input type="hidden" name="form-name" value={naam} />
+  <p class="verborgen" aria-hidden="true">
+    <label>Niet invullen <input name="adres-website" tabindex="-1" autocomplete="off" /></label>
+  </p>
+  <slot />
+  <p class="privacy-noot">We gebruiken je gegevens alleen hiervoor en geven ze nooit door. Lees onze <a href="/privacy">privacyverklaring</a>.</p>
+  <div><button type="submit" class="knop knop-doorn">{knop}</button></div>
+</form>

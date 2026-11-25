@@ -1,0 +1,49 @@
+---
+import Base from '../layouts/Base.astro';
+import PaginaKop from '../components/PaginaKop.astro';
+import { site } from '../data/site';
+---
+
+<Base titel="Privacyverklaring" beschrijving="Hoe Hulp aan de Verdrukte Kerk omgaat met je persoonsgegevens.">
+  <PaginaKop titel="Privacyverklaring" intro="We gaan zorgvuldig om met je gegevens. Hier lees je welke gegevens we verzamelen, waarom, en wat je rechten zijn." />
+
+  <section class="sectie">
+    <div class="wrap-smal prose">
+      <h2>Wie we zijn</h2>
+      <p>
+        {site.naam} {site.rechtsvorm}, {site.adres.straat}, {site.adres.postcode} {site.adres.gemeente}{site.ondernemingsnummer && `, ondernemingsnummer ${site.ondernemingsnummer}`},
+        is verantwoordelijk voor de verwerking van je persoonsgegevens. Je bereikt ons via <a href={`mailto:${site.email}`}>{site.email}</a>.
+      </p>
+
+      <h2>Welke gegevens we verwerken</h2>
+      <p>Als je een formulier invult op deze website, verwerken we de gegevens die je zelf opgeeft, zoals je naam, e-mailadres, postadres en telefoonnummer. We gebruiken ze alleen voor het doel van dat formulier:</p>
+      <ul>
+        <li>je het tijdschrift De Stem of een gratis boek toesturen;</li>
+        <li>je informeren over een evenement waarvoor je je aanmeldde;</li>
+        <li>contact met je opnemen over vrijwilligerswerk, een presentatie of je vraag.</li>
+      </ul>
+      <p>Doe je een gift, dan bewaren we de gegevens van je overschrijving voor onze boekhouding, zoals de wet dat vraagt.</p>
+
+      <h2>Met wie we gegevens delen</h2>
+      <p>We verkopen of verhuren je gegevens nooit. Formulieren worden verwerkt via Netlify, het platform waarop deze website draait.</p>
+
+      <h2>Hoe lang we gegevens bewaren</h2>
+      <p>We bewaren je gegevens zolang dat nodig is voor het doel waarvoor je ze gaf. Schrijf je je uit voor De Stem, dan verwijderen we je adres uit de verzendlijst.</p>
+
+      <h2>Bezoekersstatistieken</h2>
+      <p>
+        Om te zien hoeveel mensen onze website bezoeken, gebruiken we GoatCounter. Dat werkt zonder cookies en verzamelt geen persoonsgegevens: we zien alleen anonieme totalen, zoals het aantal bezoeken per pagina.
+        Daarom vragen we ook geen toestemming voor cookies.
+      </p>
+
+      <h2>Video's</h2>
+      <p>Video's van YouTube laden pas als je op afspelen klikt. Pas dan maakt je browser verbinding met YouTube (via youtube-nocookie.com). Daarvoor geldt het privacybeleid van Google.</p>
+
+      <h2>Je rechten</h2>
+      <p>
+        Je hebt het recht om je gegevens in te kijken, te laten verbeteren of te laten verwijderen, en om bezwaar te maken tegen het gebruik ervan. Stuur daarvoor een mail naar <a href={`mailto:${site.email}`}>{site.email}</a>.
+        Ben je niet tevreden over hoe we met je gegevens omgaan, dan kun je een klacht indienen bij de <a href="https://www.gegevensbeschermingsautoriteit.be" rel="noopener">Gegevensbeschermingsautoriteit</a>.
+      </p>
+    </div>
+  </section>
+</Base>

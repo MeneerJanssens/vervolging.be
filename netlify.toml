@@ -1,0 +1,74 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+# Oude Google Sites-adressen doorverwijzen naar de nieuwe pagina's
+[[redirects]]
+  from = "/home"
+  to = "/"
+  status = 301
+[[redirects]]
+  from = "/korea"
+  to = "/noord-korea"
+  status = 301
+[[redirects]]
+  from = "/over-ons/wie-zijn-wij"
+  to = "/over-ons"
+  status = 301
+[[redirects]]
+  from = "/over-ons/vrijwilligerswerk"
+  to = "/over-ons/vrijwilliger-worden"
+  status = 301
+[[redirects]]
+  from = "/hulpverlening/*"
+  to = "/ons-werk"
+  status = 301
+[[redirects]]
+  from = "/initiatieven/evenementen"
+  to = "/agenda"
+  status = 301
+[[redirects]]
+  from = "/initiatieven/inspirerende-boeken"
+  to = "/doe-mee/gratis-boek"
+  status = 301
+[[redirects]]
+  from = "/initiatieven/getuigenissen"
+  to = "/getuigenissen"
+  status = 301
+[[redirects]]
+  from = "/initiatieven/waarheid-onder-vuur"
+  to = "/getuigenissen"
+  status = 301
+[[redirects]]
+  from = "/initiatieven/*"
+  to = "/doe-mee/:splat"
+  status = 301
+[[redirects]]
+  from = "/maandblad"
+  to = "/de-stem"
+  status = 301
+[[redirects]]
+  from = "/nodig-ons-uit"
+  to = "/doe-mee/nodig-ons-uit"
+  status = 301
+
+# Later, voor de Franse versie op persecution.be:
+# [[redirects]]
+#   from = "https://persecution.be/*"
+#   to = "/fr/:splat"
+#   status = 200
+#   force = true
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-Frame-Options = "SAMEORIGIN"
+[[headers]]
+  for = "/_astro/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"

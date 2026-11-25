@@ -1,0 +1,121 @@
+---
+import Base from '../layouts/Base.astro';
+import Formulier from '../components/Formulier.astro';
+import { site } from '../data/site';
+---
+
+<Base titel="Licht in donker Noord-Korea" beschrijving="Op 2 en 3 oktober 2027 vertellen Eric Foley en een christen uit Noord-Korea in kerken in heel België over geloof in het meest gesloten land ter wereld.">
+  <section class="korea">
+    <div class="wrap">
+      <p class="datum"><time datetime="2027-10-02">2</time> en <time datetime="2027-10-03">3 oktober 2027</time>, verschillende plaatsen in België</p>
+      <h1>Licht in donker Noord-Korea</h1>
+      <p class="inleiding">Een verhaal van geloof, moed en volharding, voor het eerst te horen in België.</p>
+      <div class="knoppen">
+        <a href="#aanmelden" class="knop knop-doorn">Hou me op de hoogte</a>
+        <a href="#gastkerk" class="knop knop-lijn">Onze kerk wil gastlocatie zijn</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="sectie">
+    <div class="wrap twee">
+      <div class="prose">
+        <h2>Christen zijn in Noord-Korea</h2>
+        <p>Angst, onderdrukking en onrecht. In Noord-Korea is christen zijn allesbehalve vanzelfsprekend. Wie met een Bijbel betrapt wordt, riskeert het werkkamp, en vaak wordt de hele familie meegestraft.</p>
+        <p>Toch blijft het licht van het evangelie schijnen, ook op de donkerste plek. Op 2 en 3 oktober 2027 organiseren we op verschillende plaatsen in België bijeenkomsten. We luisteren naar aangrijpende verhalen en ontdekken hoe God ook daar aan het werk is.</p>
+      </div>
+      <div>
+        <h2>De sprekers</h2>
+        <dl class="sprekers">
+          <div>
+            <dt>Eric Foley</dt>
+            <dd>Eric Foley zet zich al jaren in voor Noord-Koreaanse christenen. Samen met zijn vrouw werkt hij aan initiatieven om Noord-Koreanen met het evangelie te bereiken, Bijbels te verspreiden en de vervolgde kerk te steunen.</dd>
+          </div>
+          <div>
+            <dt>Een gast uit Noord-Korea</dt>
+            <dd>We hopen ook een christen uit Noord-Korea te verwelkomen, die uit eigen ervaring vertelt over geloof en vervolging. Om veiligheidsredenen maken we de naam niet bekend.</dd>
+          </div>
+        </dl>
+        <p class="noot">De locaties, de tijdstippen en de komst van de Noord-Koreaanse gast bevestigen we later.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sectie sectie-papier" id="aanmelden">
+    <div class="wrap twee">
+      <div>
+        <h2>Wil je erbij zijn?</h2>
+        <p>Laat je gegevens achter. Zodra het programma rond is, laten we je weten waar en wanneer de bijeenkomsten plaatsvinden. Je zit nergens aan vast.</p>
+      </div>
+      <Formulier naam="noord-korea" knop="Hou me op de hoogte">
+        <div class="rij">
+          <div class="veld"><label for="k-naam">Naam</label><input id="k-naam" name="naam" type="text" required autocomplete="name" /></div>
+          <div class="veld"><label for="k-email">E-mail</label><input id="k-email" name="email" type="email" required autocomplete="email" /></div>
+        </div>
+        <div class="rij">
+          <div class="veld">
+            <label for="k-provincie">Provincie</label>
+            <select id="k-provincie" name="provincie">
+              <option>Antwerpen</option>
+              <option>Limburg</option>
+              <option>Oost-Vlaanderen</option>
+              <option>West-Vlaanderen</option>
+              <option>Vlaams-Brabant</option>
+              <option>Brussel</option>
+              <option>Wallonië</option>
+              <option>Nederland</option>
+            </select>
+          </div>
+          <div class="veld"><label for="k-aantal">Met hoeveel personen?</label><input id="k-aantal" name="aantal" type="number" min="1" value="1" /></div>
+        </div>
+      </Formulier>
+    </div>
+  </section>
+
+  <section class="sectie sectie-nacht" id="gastkerk">
+    <div class="wrap twee">
+      <div>
+        <h2>Een bijeenkomst in jouw kerk?</h2>
+        <p>Ben je voorganger of kerkleider, of ben je betrokken bij een christelijke organisatie? We zoeken kerken die op 2 of 3 oktober 2027 hun deuren willen openen voor een bijeenkomst over Noord-Korea.</p>
+        <p>Meld je vrijblijvend aan als mogelijke gastlocatie. Samen bekijken we wat haalbaar is en stellen we een programma op. Liever mailen? Dat kan via <a href={`mailto:${site.email}`}>{site.email}</a>.</p>
+      </div>
+      <Formulier naam="noord-korea-gastkerk" knop="Meld onze kerk aan">
+        <div class="rij">
+          <div class="veld"><label for="g-naam">Naam</label><input id="g-naam" name="naam" type="text" required autocomplete="name" /></div>
+          <div class="veld"><label for="g-kerk">Kerk of organisatie</label><input id="g-kerk" name="kerk" type="text" required /></div>
+        </div>
+        <div class="rij">
+          <div class="veld"><label for="g-email">E-mail</label><input id="g-email" name="email" type="email" required autocomplete="email" /></div>
+          <div class="veld"><label for="g-gemeente">Gemeente</label><input id="g-gemeente" name="gemeente" type="text" required /></div>
+        </div>
+        <div class="veld"><label for="g-bericht">Opmerkingen</label><textarea id="g-bericht" name="bericht" placeholder="Bijvoorbeeld de grootte van de zaal of welke dag het beste past"></textarea></div>
+      </Formulier>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .korea {
+    background:
+      radial-gradient(ellipse 60% 70% at 85% 40%, rgb(255 214 140 / 0.22), transparent 70%),
+      var(--nacht);
+    color: #dfe7f1;
+    padding-block: clamp(4.5rem, 12vw, 9rem);
+    border-bottom: 6px solid var(--doorn);
+  }
+  .korea h1 { color: var(--wit); font-size: clamp(2.8rem, 7vw, 5.5rem); line-height: 0.98; letter-spacing: -0.035em; max-width: 12ch; }
+  .korea .inleiding { color: #c3d1e2; }
+  .datum { font-family: var(--kop); font-weight: 700; color: #ffd68c; margin-bottom: 1.25rem; }
+  .korea .knop-lijn { color: var(--wit); }
+  .korea .knop-lijn:hover { background: var(--wit); color: var(--nacht); border-color: var(--wit); }
+  .twee { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2.5rem, 6vw, 5rem); align-items: start; }
+  .twee .prose h2 { margin-top: 0; }
+  .sprekers { margin: 1.5rem 0; display: grid; gap: 1.5rem; }
+  .sprekers div { border-top: 2px solid var(--doorn); padding-top: 0.9rem; }
+  .sprekers dt { font-family: var(--kop); font-weight: 800; font-size: 1.2rem; margin-bottom: 0.3rem; }
+  .sprekers dd { margin: 0; color: var(--steen); }
+  .noot { font-size: 0.95rem; color: var(--steen); }
+  .sectie-nacht :global(.privacy-noot) { color: #9fb2c9; }
+  .sectie-nacht :global(.veld label), .sectie-nacht :global(.veld legend) { color: var(--wit); }
+  @media (max-width: 56rem) { .twee { grid-template-columns: 1fr; } }
+</style>

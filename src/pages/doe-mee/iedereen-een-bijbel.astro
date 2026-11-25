@@ -1,0 +1,39 @@
+---
+import Base from '../../layouts/Base.astro';
+import PaginaKop from '../../components/PaginaKop.astro';
+import Citaat from '../../components/Citaat.astro';
+import OproepSteun from '../../components/OproepSteun.astro';
+import foto from '../../assets/foto/pakistan-meisje-kinderbijbel.jpg';
+---
+
+<Base titel="Iedereen een Bijbel" beschrijving="HVK helpt Bijbels te brengen naar christenen in landen waar Gods Woord verboden of moeilijk te krijgen is.">
+  <PaginaKop
+    titel="Een Bijbel voor elke gelovige"
+    intro="Het is mogelijk om elke christen ter wereld een eigen Bijbel te geven. Daar werken we aan, vooral in landen waar gelovigen om hun geloof vervolgd worden."
+    foto={foto}
+    fotoAlt="Een meisje bij een steenbakkerij houdt trots een kinderbijbel in het Urdu vast"
+    fotoPositie="50% 35%"
+  />
+
+  <section class="sectie">
+    <div class="wrap twee">
+      <div class="prose">
+        <h2>Geen plek is te ver</h2>
+        <p>Geen weg is te lang en geen risico te groot als broers en zussen hongeren naar Gods Woord. In sommige landen is een Bijbel verboden. Daar worden ze gesmokkeld, en dat versterkt de kerk.</p>
+        <h2>Bijbels aan de frontlinie</h2>
+        <p>Het werk is vaak moeilijk, gevaarlijk en illegaal. Toch gaan moedige mannen en vrouwen op pad, zodat Gods Woord mensen bereikt die het anders nooit in handen zouden krijgen.</p>
+        <p>Bid je mee voor de veilige verspreiding van Bijbels in de moeilijkste gebieden ter wereld?</p>
+      </div>
+      <Citaat wie="Richard Wurmbrand">Ik zou niet in de Bijbel geloven als het niet de moeite waard was om hem met het grootste risico overal binnen te smokkelen.</Citaat>
+    </div>
+  </section>
+
+
+  <OproepSteun titel="Geef een Bijbel" />
+</Base>
+
+<style>
+  .twee { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: clamp(2.5rem, 6vw, 5rem); align-items: center; }
+  .twee .prose h2:first-child { margin-top: 0; }
+  @media (max-width: 56rem) { .twee { grid-template-columns: 1fr; } }
+</style>

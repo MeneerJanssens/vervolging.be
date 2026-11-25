@@ -1,0 +1,83 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import { site } from '../data/site';
+import foto from '../assets/foto/gemeente-afrika.jpg';
+---
+
+<Base titel="Steun ons" beschrijving="Steun vervolgde christenen met een gift aan Hulp aan de Verdrukte Kerk, eenmalig of maandelijks.">
+  <section class="steun">
+    <div class="wrap steun-raster">
+      <div>
+        <h1>Steun vervolgde christenen</h1>
+        <p class="inleiding">
+          HVK leeft volledig van giften. Dankzij jouw steun kunnen we onze broers en zussen echt bijstaan: met noodhulp, medische zorg, Bijbels en steun voor gezinnen van gevangenen. Daar zijn we je enorm dankbaar voor.
+        </p>
+      </div>
+      <Image src={foto} alt="Een christelijke gemeente in Afrika voor haar kerkgebouw" widths={[500, 800]} sizes="(max-width: 56rem) 100vw, 40vw" loading="eager" />
+    </div>
+  </section>
+
+  <section class="sectie">
+    <div class="wrap manieren">
+      <article class="manier">
+        <h2>Overschrijving</h2>
+        <p>Schrijf je gift over op de rekening van HVK. Dat kan eenmalig, of maandelijks via een doorlopende opdracht in je bankapp.</p>
+        <dl class="rekening">
+          <div><dt>Op naam van</dt><dd>{site.naam} {site.rechtsvorm}</dd></div>
+          <div><dt>IBAN</dt><dd class="iban">{site.iban}</dd></div>
+          <div><dt>BIC</dt><dd>{site.bic}</dd></div>
+        </dl>
+        <button type="button" class="knop knop-lijn kopieer" data-iban={site.iban.replace(/\s/g, '')}>Kopieer IBAN</button>
+        <p class="gekopieerd" role="status" aria-live="polite"></p>
+      </article>
+
+      <article class="manier">
+        <h2>Online geven</h2>
+        <p>Liever online geven? Dat kan snel en veilig via onze pagina op Ko-fi.</p>
+        <a href={site.kofi} class="knop knop-doorn" rel="noopener">Geef via Ko-fi</a>
+      </article>
+    </div>
+  </section>
+
+  <section class="sectie sectie-papier">
+    <div class="wrap-smal prose">
+      <h2>Maandelijks geven</h2>
+      <p>Een vaste maandelijkse gift geeft ons de zekerheid om ons werk goed te plannen en partners langer te steunen. Elk bedrag maakt een blijvend verschil.</p>
+      <h2>Goed om te weten</h2>
+      <p>HVK kan geen fiscale attesten uitreiken. Je gift is dus niet fiscaal aftrekbaar. Des te dankbaarder zijn we voor je steun.</p>
+      <p>Vragen over je gift? Mail ons via <a href={`mailto:${site.email}`}>{site.email}</a>.</p>
+    </div>
+  </section>
+</Base>
+
+<script>
+  document.querySelector<HTMLButtonElement>('.kopieer')?.addEventListener('click', async (e) => {
+    const knop = e.currentTarget as HTMLButtonElement;
+    const status = document.querySelector('.gekopieerd');
+    try {
+      await navigator.clipboard.writeText(knop.dataset.iban ?? '');
+      if (status) status.textContent = 'IBAN gekopieerd.';
+    } catch {
+      if (status) status.textContent = 'Kopiëren lukte niet. Selecteer het nummer en kopieer het zelf.';
+    }
+  });
+</script>
+
+<style>
+  .steun { background: var(--nacht); color: #dfe7f1; padding-block: clamp(3rem, 7vw, 5.5rem); border-bottom: 6px solid var(--doorn); }
+  .steun h1 { color: var(--wit); max-width: 12ch; }
+  .steun .inleiding { color: #c3d1e2; }
+  .steun-raster { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: clamp(2.5rem, 6vw, 5rem); align-items: center; }
+  .steun-raster img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 4px; }
+  .manieren { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: clamp(2.5rem, 6vw, 5rem); align-items: start; }
+  .manier { border-top: 4px solid var(--doorn); padding-top: 1.5rem; }
+  .rekening { margin: 1.5rem 0; display: grid; gap: 0.75rem; }
+  .rekening div { display: grid; grid-template-columns: 8rem 1fr; gap: 1rem; align-items: baseline; }
+  .rekening dt { font-family: var(--kop); font-weight: 600; font-size: 0.9rem; color: var(--steen); }
+  .rekening dd { margin: 0; font-family: var(--kop); font-weight: 700; }
+  .rekening .iban { font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 800; letter-spacing: 0.02em; color: var(--blauw); }
+  .gekopieerd { font-size: 0.92rem; color: var(--steen); min-height: 1.5em; margin-top: 0.5rem; }
+  @media (max-width: 56rem) { .steun-raster, .manieren { grid-template-columns: 1fr; } }
+  @media (max-width: 30rem) { .rekening div { grid-template-columns: 1fr; gap: 0; } }
+</style>

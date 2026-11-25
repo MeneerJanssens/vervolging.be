@@ -1,0 +1,221 @@
+---
+import { Image } from 'astro:assets';
+import logo from '../assets/logo/hvk-logo.png';
+import { navigatie, site } from '../data/site';
+
+const pad = Astro.url.pathname.replace(/\/$/, '') || '/';
+const actief = (href: string) => (href === '/' ? pad === '/' : pad === href || pad.startsWith(href + '/'));
+---
+
+<header class="kop">
+  <div class="wrap kop-binnen">
+    <a href="/" class="merk" aria-label={`${site.naam}, naar de startpagina`}>
+      <Image src={logo} alt="" width={112} height={113} class="merk-logo" loading="eager" />
+      <span class="merk-tekst">Hulp aan de<br />Verdrukte Kerk</span>
+    </a>
+
+    <nav class="nav-groot" aria-label="Hoofdmenu">
+      <ul>
+        {navigatie.map((item) => (
+          <li class:list={['nav-item', { 'heeft-sub': item.children }]}>
+            <a href={item.href} aria-current={actief(item.href) ? 'page' : undefined}>{item.label}</a>
+            {item.children && (
+              <ul class="sub">
+                {item.children.map((c) => (
+                  <li><a href={c.href} aria-current={pad === c.href ? 'page' : undefined}>{c.label}</a></li>
+                ))}
+              </ul>
+            )}
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <div class="kop-acties">
+      <a href={site.fransVersie} class="taal" hreflang="fr" lang="fr" title="Version française">FR</a>
+      <a href="/steun-ons" class="knop knop-doorn knop-steun">Steun ons</a>
+    </div>
+
+    <details class="nav-klein">
+      <summary><span class="sr-only">Menu openen</span><span aria-hidden="true" class="hamburger"></span></summary>
+      <nav aria-label="Menu">
+        <ul>
+          {navigatie.map((item) => (
+            <li>
+              <a href={item.href}>{item.label}</a>
+              {item.children && (
+                <ul>
+                  {item.children.filter((c) => c.href !== item.href).map((c) => <li><a href={c.href}>{c.label}</a></li>)}
+                </ul>
+              )}
+            </li>
+          ))}
+          <li><a href="/contact">Contact</a></li>
+          <li><a href={site.fransVersie} lang="fr">Version française</a></li>
+        </ul>
+        <a href="/steun-ons" class="knop knop-doorn">Steun ons</a>
+      </nav>
+    </details>
+  </div>
+</header>
+
+<style>
+  .kop {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgb(255 255 255 / 0.97);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--lijn);
+  }
+  .kop-binnen {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    min-height: 5rem;
+  }
+  .merk {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    text-decoration: none;
+    color: var(--inkt);
+    flex: none;
+  }
+  .merk-logo { width: 3.25rem; height: auto; }
+  .merk-tekst {
+    font-family: var(--kop);
+    font-weight: 800;
+    font-size: 0.95rem;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+  }
+
+  .nav-groot { margin-left: auto; }
+  .nav-groot > ul { display: flex; gap: 0.25rem; list-style: none; margin: 0; padding: 0; }
+  .nav-item { position: relative; }
+  .nav-item > a {
+    display: block;
+    padding: 0.6rem 0.7rem;
+    font-family: var(--kop);
+    font-weight: 600;
+    font-size: 0.93rem;
+    color: var(--inkt);
+    text-decoration: none;
+    border-radius: 6px;
+  }
+  .nav-item > a:hover { color: var(--blauw); }
+  .nav-item > a[aria-current='page'] {
+    color: var(--blauw);
+    text-decoration: underline;
+    text-decoration-color: var(--doorn);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.5em;
+  }
+  .sub {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 14rem;
+    list-style: none;
+    margin: 0;
+    padding: 0.5rem;
+    background: var(--wit);
+    border: 1px solid var(--lijn);
+    border-radius: 10px;
+    box-shadow: 0 18px 40px -18px rgb(10 35 66 / 0.35);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(4px);
+    transition: opacity 0.15s, transform 0.15s, visibility 0.15s;
+  }
+  .heeft-sub:hover .sub,
+  .heeft-sub:focus-within .sub { opacity: 1; visibility: visible; transform: none; }
+  .sub a {
+    display: block;
+    padding: 0.55rem 0.75rem;
+    font-family: var(--kop);
+    font-size: 0.92rem;
+    font-weight: 500;
+    color: var(--inkt);
+    text-decoration: none;
+    border-radius: 6px;
+  }
+  .sub a:hover, .sub a[aria-current='page'] { background: var(--papier); color: var(--blauw); }
+
+  .kop-acties { display: flex; align-items: center; gap: 0.75rem; }
+  .taal {
+    font-family: var(--kop);
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--steen);
+    text-decoration: none;
+    padding: 0.4rem;
+  }
+  .taal:hover { color: var(--blauw); }
+  .knop-steun { padding: 0.8em 1.25em; }
+
+  .nav-klein { display: none; }
+
+  @media (max-width: 68rem) {
+    .nav-groot, .kop-acties { display: none; }
+    .nav-klein { display: block; margin-left: auto; }
+    .nav-klein summary {
+      list-style: none;
+      cursor: pointer;
+      width: 3rem;
+      height: 3rem;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+    }
+    .nav-klein summary::-webkit-details-marker { display: none; }
+    .hamburger, .hamburger::before, .hamburger::after {
+      display: block;
+      width: 1.5rem;
+      height: 2px;
+      background: var(--inkt);
+      position: relative;
+      transition: transform 0.2s;
+    }
+    .hamburger::before, .hamburger::after { content: ''; position: absolute; left: 0; }
+    .hamburger::before { top: -7px; }
+    .hamburger::after { top: 7px; }
+    .nav-klein[open] .hamburger { background: transparent; }
+    .nav-klein[open] .hamburger::before { transform: translateY(7px) rotate(45deg); }
+    .nav-klein[open] .hamburger::after { transform: translateY(-7px) rotate(-45deg); }
+    .nav-klein > nav {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 100%;
+      background: var(--wit);
+      border-bottom: 1px solid var(--lijn);
+      padding: 1rem var(--rand) 2rem;
+      max-height: calc(100dvh - 5rem);
+      overflow-y: auto;
+      box-shadow: 0 30px 40px -30px rgb(10 35 66 / 0.4);
+    }
+    .nav-klein ul { list-style: none; margin: 0; padding: 0; }
+    .nav-klein > nav > ul > li { border-bottom: 1px solid var(--lijn); padding: 0.4rem 0; }
+    .nav-klein > nav > ul > li > a {
+      display: block;
+      padding: 0.5rem 0;
+      font-family: var(--kop);
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--inkt);
+      text-decoration: none;
+    }
+    .nav-klein li ul { padding: 0 0 0.5rem 1rem; }
+    .nav-klein li ul a {
+      display: block;
+      padding: 0.35rem 0;
+      font-family: var(--kop);
+      font-size: 1rem;
+      color: var(--steen);
+      text-decoration: none;
+    }
+    .nav-klein .knop { margin-top: 1.25rem; }
+  }
+</style>

@@ -1,0 +1,314 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Citaat from '../components/Citaat.astro';
+import OproepSteun from '../components/OproepSteun.astro';
+import heldFoto from '../assets/foto/vrouw-achter-tralies.jpg';
+import gemeente from '../assets/foto/gemeente-afrika.jpg';
+import lezen from '../assets/foto/kinderen-lezen-bij-hut.jpg';
+import boek from '../assets/foto/boek-jas-met-kogelgaten.jpg';
+
+const projecten = (await getCollection('projecten', (p) => p.data.status === 'lopend')).sort((a, b) => a.data.volgorde - b.data.volgorde);
+const stem = (await getCollection('tijdschriften', (t) => t.data.reeks === 'de-stem')).sort((a, b) => +b.data.datum - +a.data.datum)[0];
+
+const vandaag = new Date();
+const komend = (await getCollection('evenementen', (e) => !e.data.concept && (e.data.einddatum ?? e.data.datum) >= vandaag)).sort((a, b) => +a.data.datum - +b.data.datum)[0];
+---
+
+<Base titel="Home">
+  <!-- Opening -->
+  <section class="held">
+    <div class="wrap held-raster">
+      <div class="held-tekst">
+        <h1>De stem van vervolgde christenen</h1>
+        <p class="inleiding">
+          Wereldwijd worden christenen uitgesloten, opgesloten of gedood omdat ze Jezus volgen.
+          Hulp aan de Verdrukte Kerk staat naast hen met praktische hulp en gebed, en vertelt hun verhaal in België.
+        </p>
+        <div class="knoppen">
+          <a href="/doe-mee/bid-mee" class="knop knop-doorn">Bid mee</a>
+          <a href="/ons-werk" class="knop knop-lijn">Ontdek ons werk</a>
+        </div>
+      </div>
+      <div class="held-foto">
+        <Image src={heldFoto} alt="Een vrouw kijkt door de tralies van een gevangeniscel" widths={[480, 760, 1100]} sizes="(max-width: 56rem) 100vw, 42vw" loading="eager" fetchpriority="high" />
+      </div>
+    </div>
+  </section>
+
+  {komend && (
+    <aside class="aankondiging" aria-label="Komend evenement">
+      <div class="wrap aankondiging-binnen">
+        <p class="aankondiging-datum">
+          {komend.data.einddatum
+            ? `${komend.data.datum.getDate()} en ${komend.data.einddatum.toLocaleDateString('nl-BE', { day: 'numeric', month: 'long', year: 'numeric' })}`
+            : komend.data.datum.toLocaleDateString('nl-BE', { day: 'numeric', month: 'long', year: 'numeric' })}
+        </p>
+        <p class="aankondiging-tekst"><strong>{komend.data.titel}.</strong> {komend.data.samenvatting}</p>
+        {komend.data.link && <a href={komend.data.link} class="knop knop-blauw">{komend.data.linkTekst ?? 'Meer info'}</a>}
+      </div>
+    </aside>
+  )}
+
+  <!-- Missie -->
+  <section class="sectie">
+    <div class="wrap missie">
+      <Citaat wie="Hakim" waar="voorganger, over zijn jas met kogelgaten">Dit zijn mijn medailles.</Citaat>
+      <div class="missie-tekst">
+        <h2 class="sr-only">Onze missie</h2>
+        <p>
+          Hakim draagt zijn jas nog altijd. De kogelgaten herinneren hem aan de prijs die hij voor zijn geloof betaalde, en aan de God die hem bewaarde.
+          Verhalen zoals het zijne zijn de reden dat HVK bestaat.
+        </p>
+        <p>
+          Vanuit ons geloof in Jezus Christus steunen we christenen die om hun geloof worden gediscrimineerd, gevangengezet of mishandeld.
+          En we roepen christenen in België op om met hen verbonden te zijn: door te bidden, te geven en hun verhaal door te vertellen.
+        </p>
+        <a href="/over-ons" class="link-sterk">Wie we zijn</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Wat we doen -->
+  <section class="sectie sectie-papier">
+    <div class="wrap doen">
+      <div class="doen-foto">
+        <Image src={gemeente} alt="Een christelijke gemeente in Afrika poseert voor haar bakstenen kerkgebouw" widths={[600, 900, 1300]} sizes="(max-width: 56rem) 100vw, 50vw" />
+      </div>
+      <div>
+        <h2>Wat we doen</h2>
+        <dl class="doelen">
+          <div>
+            <dt>Helpen</dt>
+            <dd>Medische zorg, noodhulp en steun voor gezinnen van wie een vader of moeder gevangen zit. Altijd samen met lokale partners die de situatie kennen.</dd>
+          </div>
+          <div>
+            <dt>Bemoedigen</dt>
+            <dd>Bijbels, onderwijs voor voorgangers en kaarten uit België laten vervolgde christenen weten dat ze niet vergeten zijn.</dd>
+          </div>
+          <div>
+            <dt>Getuigen</dt>
+            <dd>We helpen vervolgde christenen om het evangelie te blijven delen, ook met wie hen vervolgt.</dd>
+          </div>
+          <div>
+            <dt>Informeren</dt>
+            <dd>Via ons tijdschrift De Stem, video's en presentaties in kerken vertellen we in België wat er wereldwijd gebeurt.</dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projecten -->
+  <section class="sectie">
+    <div class="wrap">
+      <div class="kop-met-link">
+        <h2>Waar we nu helpen</h2>
+        <a href="/ons-werk" class="link-sterk">Alle projecten</a>
+      </div>
+      <ul class="landen">
+        {projecten.map((p) => (
+          <li>
+            <span class="land">{p.data.land}</span>
+            <span class="focus">{p.data.titel}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- Doe mee -->
+  <section class="sectie sectie-nacht">
+    <div class="wrap doemee">
+      <div>
+        <h2>Wat jij kunt doen</h2>
+        <p class="inleiding">Bidden, een kaart schrijven, hun verhaal vertellen in je kerk: je kunt op veel manieren naast vervolgde christenen staan.</p>
+        <ul class="acties">
+          <li>
+            <a href="/doe-mee/bid-mee"><h3>Bid mee</h3></a>
+            <p>Tien gebedspunten die vervolgde christenen zelf belangrijk vinden.</p>
+          </li>
+          <li>
+            <a href="/doe-mee/bemoedig-iemand"><h3>Schrijf een kaart</h3></a>
+            <p>Een kaart aan een gevangene toont liefde, en laat de overheid weten dat we meekijken.</p>
+          </li>
+          <li>
+            <a href="/doe-mee/nodig-ons-uit"><h3>Nodig ons uit</h3></a>
+            <p>We komen graag vertellen in je kerk, jeugdgroep of school.</p>
+          </li>
+          <li>
+            <a href="/over-ons/vrijwilliger-worden"><h3>Word vrijwilliger</h3></a>
+            <p>Als vertaler, ambassadeur in je kerk of op sociale media.</p>
+          </li>
+        </ul>
+      </div>
+      <div class="doemee-foto">
+        <Image src={lezen} alt="Kinderen lezen samen een boekje voor een hut van lappen stof in een woestijnachtig landschap" widths={[500, 800, 1100]} sizes="(max-width: 56rem) 100vw, 40vw" />
+      </div>
+    </div>
+  </section>
+
+  <!-- De Stem + boek -->
+  <section class="sectie">
+    <div class="wrap lezen">
+      {stem && (
+        <article class="lees-blok">
+          <a href={stem.data.flipbook} class="cover" rel="noopener">
+            <Image src={stem.data.cover} alt={`Cover van De Stem, ${stem.data.editie}`} width={360} />
+          </a>
+          <div>
+            <h2>De Stem</h2>
+            <p>Elke twee maanden verhalen en gebedspunten uit de vervolgde kerk. Gratis, op papier of online.</p>
+            <p class="editie">Nu verschenen ({stem.data.editie}): <em>{stem.data.titel}</em></p>
+            <div class="knoppen">
+              <a href={stem.data.flipbook} class="knop knop-blauw" rel="noopener">Lees online</a>
+              <a href="/de-stem#abonneren" class="knop knop-lijn">Ontvang De Stem</a>
+            </div>
+          </div>
+        </article>
+      )}
+      <article class="lees-blok">
+        <a href="/doe-mee/gratis-boek" class="cover cover-boek">
+          <Image src={boek} alt="Het boek Een jas met kogelgaten" width={360} />
+        </a>
+        <div>
+          <h2>Gratis boek</h2>
+          <p><em>Een jas met kogelgaten</em> bundelt 40 verhalen van vervolgde christenen, elk met een bijbeltekst en overdenking. Een sponsor betaalt het boek en de verzending.</p>
+          <div class="knoppen">
+            <a href="/doe-mee/gratis-boek" class="knop knop-blauw">Vraag het boek aan</a>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <OproepSteun />
+</Base>
+
+<style>
+  /* Opening */
+  .held { background: var(--nacht); color: #dfe7f1; overflow: hidden; }
+  .held-raster {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    align-items: end;
+    gap: clamp(2rem, 5vw, 4rem);
+  }
+  .held-tekst { padding-block: clamp(3.5rem, 9vw, 7rem); }
+  .held h1 {
+    color: var(--wit);
+    font-size: clamp(2.8rem, 7vw, 5.6rem);
+    line-height: 0.98;
+    letter-spacing: -0.035em;
+    max-width: 11ch;
+  }
+  .held .inleiding { color: #c3d1e2; margin-top: 1.5rem; }
+  .held .knop-lijn { color: var(--wit); }
+  .held .knop-lijn:hover { background: var(--wit); color: var(--nacht); border-color: var(--wit); }
+  .held-foto { align-self: stretch; position: relative; min-height: 22rem; }
+  .held-foto img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 25%;
+  }
+
+  /* Aankondiging */
+  .aankondiging { background: var(--doorn); color: var(--wit); }
+  .aankondiging-binnen {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem 2rem;
+    padding-block: 1.25rem;
+    flex-wrap: wrap;
+  }
+  .aankondiging-datum {
+    font-family: var(--kop);
+    font-weight: 800;
+    font-size: 1.15rem;
+    margin: 0;
+    white-space: nowrap;
+  }
+  .aankondiging-tekst { margin: 0; flex: 1 1 24rem; font-size: 1rem; }
+  .aankondiging .knop-blauw { background: var(--wit); color: var(--doorn); }
+  .aankondiging .knop-blauw:hover { background: var(--nacht); color: var(--wit); }
+
+  /* Missie */
+  .missie {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2.5rem, 6vw, 6rem);
+    align-items: center;
+  }
+  .missie :global(.citaat blockquote) { font-size: clamp(2.6rem, 6vw, 5rem); }
+  .missie-tekst { font-size: 1.12rem; max-width: 34em; }
+  .missie-tekst .link-sterk { display: inline-block; margin-top: 1rem; }
+
+  /* Wat we doen */
+  .doen {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: clamp(2.5rem, 6vw, 5rem);
+    align-items: start;
+  }
+  .doen-foto img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 4px; }
+  .doelen { margin: 0; display: grid; gap: 1.75rem; }
+  .doelen div { border-top: 2px solid var(--doorn); padding-top: 1rem; }
+  .doelen dt { font-family: var(--kop); font-weight: 800; font-size: 1.3rem; margin-bottom: 0.35rem; }
+  .doelen dd { margin: 0; color: var(--steen); max-width: 34em; }
+
+  /* Landen */
+  .kop-met-link { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; flex-wrap: wrap; margin-bottom: 2rem; }
+  .kop-met-link h2 { margin: 0; }
+  .landen { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 21rem), 1fr)); column-gap: 3rem; }
+  .landen li { border-top: 1px solid var(--lijn); padding-block: 1.25rem; }
+  .land {
+    display: block;
+    font-family: var(--kop);
+    font-weight: 800;
+    font-size: clamp(1.7rem, 3vw, 2.3rem);
+    letter-spacing: -0.03em;
+    color: var(--blauw);
+    line-height: 1.1;
+  }
+  .focus { color: var(--steen); }
+
+  /* Doe mee */
+  .doemee { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: clamp(2.5rem, 6vw, 5rem); align-items: center; }
+  .acties { list-style: none; padding: 0; margin: 2.5rem 0 0; display: grid; grid-template-columns: 1fr 1fr; gap: 2rem 2.5rem; }
+  .acties a { text-decoration: none; }
+  .acties h3 {
+    color: var(--wit);
+    margin-bottom: 0.4rem;
+    text-decoration: underline;
+    text-decoration-color: var(--doorn);
+    text-decoration-thickness: 3px;
+    text-underline-offset: 0.3em;
+  }
+  .acties a:hover h3 { color: #9cc7ef; }
+  .acties p { color: #b9c8db; font-size: 1rem; }
+  .doemee-foto img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 4px; }
+
+  /* Lezen */
+  .lezen { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(3rem, 6vw, 5rem); }
+  .lees-blok { display: grid; grid-template-columns: 10rem 1fr; gap: 1.75rem; align-items: start; }
+  .cover img { width: 100%; height: auto; box-shadow: 0 20px 35px -18px rgb(10 35 66 / 0.55); border-radius: 2px; }
+  .cover-boek img { box-shadow: none; }
+  .lees-blok h2 { font-size: clamp(1.6rem, 2.6vw, 2.1rem); }
+  .editie { color: var(--steen); font-size: 0.98rem; }
+  .lees-blok .knoppen { margin-top: 1.25rem; }
+
+  @media (max-width: 60rem) {
+    .held-raster, .missie, .doen, .doemee, .lezen { grid-template-columns: 1fr; }
+    .held-tekst { padding-bottom: 0; }
+    .held-foto { min-height: 0; aspect-ratio: 4 / 3; margin-inline: calc(-1 * var(--rand)); }
+    .doemee-foto { display: none; }
+  }
+  @media (max-width: 36rem) {
+    .acties { grid-template-columns: 1fr; }
+    .lees-blok { grid-template-columns: 7rem 1fr; gap: 1.25rem; }
+  }
+</style>

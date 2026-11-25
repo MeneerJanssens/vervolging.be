@@ -1,0 +1,63 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import PaginaKop from '../../components/PaginaKop.astro';
+import OproepSteun from '../../components/OproepSteun.astro';
+import doop from '../../assets/foto/doop-rivier.jpg';
+import kaart from '../../assets/foto/gevangen-christenen.webp';
+import bijbel from '../../assets/foto/pakistan-meisje-kinderbijbel.jpg';
+import boek from '../../assets/foto/boek-jas-met-kogelgaten.jpg';
+import uitnodiging from '../../assets/foto/presentatie-groot-scherm.webp';
+import vrijwilliger from '../../assets/foto/kinderen-ballonnen.jpg';
+
+const acties = [
+  { titel: 'Bid mee', href: '/doe-mee/bid-mee', tekst: 'Tien gebedspunten, gegroeid uit jarenlang contact met vervolgde christenen.', foto: doop, alt: 'Een doop in een rivier' },
+  { titel: 'Schrijf een kaart', href: '/doe-mee/bemoedig-iemand', tekst: 'Een kaart laat een gevangene en zijn familie weten dat ze niet vergeten zijn.', foto: kaart, alt: 'Christenen achter tralies' },
+  { titel: 'Iedereen een Bijbel', href: '/doe-mee/iedereen-een-bijbel', tekst: 'Help Bijbels te brengen naar plaatsen waar ze verboden of onbetaalbaar zijn.', foto: bijbel, alt: 'Een meisje met een kinderbijbel' },
+  { titel: 'Gratis boek', href: '/doe-mee/gratis-boek', tekst: 'Laat je inspireren door verhalen van christenen die trouw bleven.', foto: boek, alt: 'Het boek Een jas met kogelgaten' },
+  { titel: 'Nodig ons uit', href: '/doe-mee/nodig-ons-uit', tekst: 'Een presentatie of gastles in je kerk, jeugdgroep of school.', foto: uitnodiging, alt: 'Een presentatie van HVK voor een groot publiek' },
+  { titel: 'Word vrijwilliger', href: '/over-ons/vrijwilliger-worden', tekst: 'Als vertaler, ambassadeur in je kerk of op sociale media.', foto: vrijwilliger, alt: 'Kinderen met ballonnen tijdens een activiteit' },
+];
+---
+
+<Base titel="Doe mee" beschrijving="Bid mee, schrijf een kaart, vraag een gratis boek aan of nodig HVK uit in je kerk.">
+  <PaginaKop
+    titel="Doe mee"
+    intro="Voor vervolgde christenen betekent het veel dat broers en zussen elders aan hen denken. Zo kun jij naast hen staan."
+  />
+
+  <section class="sectie">
+    <div class="wrap">
+      <ul class="acties">
+        {acties.map((a) => (
+          <li>
+            <a href={a.href}>
+              <Image src={a.foto} alt="" widths={[400, 700]} sizes="(max-width: 40rem) 100vw, 33vw" />
+              <h2>{a.titel}</h2>
+            </a>
+            <p>{a.tekst}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <OproepSteun />
+</Base>
+
+<style>
+  .acties { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr)); gap: 3rem 2.5rem; }
+  .acties a { text-decoration: none; color: var(--inkt); display: block; }
+  .acties img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; border-radius: 3px; margin-bottom: 1.1rem; transition: filter 0.2s; }
+  .acties h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.4rem;
+    text-decoration: underline;
+    text-decoration-color: var(--doorn);
+    text-decoration-thickness: 3px;
+    text-underline-offset: 0.3em;
+  }
+  .acties a:hover h2 { color: var(--blauw); }
+  .acties a:hover img { filter: brightness(0.92); }
+  .acties p { color: var(--steen); }
+</style>

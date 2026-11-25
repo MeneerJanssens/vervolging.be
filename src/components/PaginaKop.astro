@@ -1,0 +1,56 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  titel: string;
+  intro?: string;
+  foto?: ImageMetadata;
+  fotoAlt?: string;
+  fotoPositie?: string;
+  donker?: boolean;
+}
+const { titel, intro, foto, fotoAlt = '', fotoPositie = 'center', donker = false } = Astro.props;
+---
+
+<section class:list={['paginakop', { 'met-foto': foto, donker }]}>
+  <div class="wrap paginakop-raster">
+    <div class="paginakop-tekst">
+      <slot name="boven" />
+      <h1>{titel}</h1>
+      {intro && <p class="inleiding">{intro}</p>}
+      <slot />
+    </div>
+    {foto && (
+      <div class="paginakop-foto">
+        <Image src={foto} alt={fotoAlt} widths={[480, 800, 1200]} sizes="(max-width: 56rem) 100vw, 45vw" style={`object-position:${fotoPositie}`} loading="eager" />
+      </div>
+    )}
+  </div>
+</section>
+
+<style>
+  .paginakop {
+    padding-block: clamp(3rem, 7vw, 5.5rem);
+    background: var(--papier);
+    border-bottom: 6px solid var(--doorn);
+  }
+  .paginakop.donker { background: var(--nacht); color: #dfe7f1; }
+  .paginakop.donker h1 { color: var(--wit); }
+  .paginakop.donker .inleiding { color: #b9c8db; }
+  .paginakop h1 { max-width: 16ch; }
+  .paginakop .inleiding { margin-top: 1.25rem; }
+  .paginakop-raster { display: grid; gap: clamp(2rem, 5vw, 4rem); align-items: center; }
+  .met-foto .paginakop-raster { grid-template-columns: 1.1fr 0.9fr; }
+  .paginakop-foto img {
+    width: 100%;
+    aspect-ratio: 4 / 3.4;
+    object-fit: cover;
+    border-radius: 4px;
+  }
+  @media (max-width: 56rem) {
+    .met-foto .paginakop-raster { grid-template-columns: 1fr; }
+    .paginakop-foto { order: -1; }
+    .paginakop-foto img { aspect-ratio: 16 / 10; }
+  }
+</style>
