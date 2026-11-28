@@ -16,7 +16,7 @@ const kinderblad = alle.find((t) => t.data.reeks === 'kinderblad');
       <div>
         <h1>De Stem</h1>
         <p class="inleiding">
-          Ons tijdschrift <em>De Stem van Vervolgde Christenen</em> verschijnt elke twee maanden. Je leest er verhalen van broers en zussen in de vervolgde kerk, nieuws uit de projecten en concrete gebedspunten. Gratis, op papier of online.
+          Ons tijdschrift <em>De Stem van Vervolgde Christenen</em> verschijnt elke twee maanden. Je leest er verhalen van broers en zussen in de vervolgde kerk, nieuws uit de projecten en concrete gebedspunten. Gratis, digitaal in je mailbox.
         </p>
         <ul class="waarom">
           <li>Je leert vervolgde christenen kennen via hun eigen verhaal.</li>
@@ -75,47 +75,19 @@ const kinderblad = alle.find((t) => t.data.reeks === 'kinderblad');
     <div class="wrap twee">
       <div>
         <h2>Ontvang De Stem gratis</h2>
-        <p>We sturen je elke twee maanden het nieuwe nummer. Op papier in je brievenbus, of digitaal in je mailbox. Je kunt je altijd weer uitschrijven.</p>
+        <p>We mailen je elke twee maanden het nieuwe nummer. De Stem verschijnt alleen nog digitaal, niet meer op papier. Je kunt je altijd weer uitschrijven.</p>
       </div>
       <Formulier naam="de-stem-abonnement" knop="Schrijf me in">
-        <fieldset class="veld">
-          <legend>Hoe wil je De Stem ontvangen?</legend>
-          <div class="keuzes">
-            <label class="keuze"><input type="radio" name="vorm" value="papier" required checked /> Op papier, per post</label>
-            <label class="keuze"><input type="radio" name="vorm" value="digitaal" /> Digitaal, per e-mail</label>
-          </div>
-        </fieldset>
         <div class="rij">
           <div class="veld"><label for="s-naam">Naam</label><input id="s-naam" name="naam" type="text" required autocomplete="name" /></div>
           <div class="veld"><label for="s-email">E-mail</label><input id="s-email" name="email" type="email" required autocomplete="email" /></div>
         </div>
-        <div class="veld">
-          <label for="s-straat">Straat en huisnummer</label>
-          <p class="hint" id="s-adres-hint">Verplicht als je De Stem op papier wilt ontvangen.</p>
-          <input id="s-straat" name="straat" type="text" autocomplete="street-address" aria-describedby="s-adres-hint" data-adres required />
-        </div>
-        <div class="rij">
-          <div class="veld"><label for="s-postcode">Postcode</label><input id="s-postcode" name="postcode" type="text" autocomplete="postal-code" data-adres required /></div>
-          <div class="veld"><label for="s-gemeente">Gemeente</label><input id="s-gemeente" name="gemeente" type="text" autocomplete="address-level2" data-adres required /></div>
-        </div>
-        <label class="keuze"><input type="checkbox" name="kinderblad" value="ja" /> Stuur ook het kinderblad Stef mee</label>
+        <label class="keuze"><input type="checkbox" name="kinderblad" value="ja" /> Mail me ook het kinderblad Stef</label>
       </Formulier>
     </div>
   </section>
 </Base>
 
-<script>
-  // Het adres is alleen verplicht voor wie De Stem op papier wil ontvangen.
-  const form = document.querySelector<HTMLFormElement>('form[name="de-stem-abonnement"]');
-  if (form) {
-    const pasAan = () => {
-      const papier = form.querySelector<HTMLInputElement>('input[name="vorm"][value="papier"]')?.checked ?? true;
-      form.querySelectorAll<HTMLInputElement>('[data-adres]').forEach((veld) => { veld.required = papier; });
-    };
-    form.querySelectorAll('input[name="vorm"]').forEach((r) => r.addEventListener('change', pasAan));
-    pasAan();
-  }
-</script>
 
 <style>
   .kop-stem { background: var(--papier); padding-block: clamp(3rem, 7vw, 5.5rem); border-bottom: 6px solid var(--doorn); }
