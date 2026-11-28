@@ -36,7 +36,7 @@ const jaar = new Date().getFullYear();
         <li><a href="/agenda">Agenda</a></li>
         <li><a href="/contact">Contact</a></li>
         <li><a href={site.facebook} rel="noopener">Facebook</a></li>
-        <li><a href={site.fransVersie} lang="fr">Version française</a></li>
+        {site.fransVersie && <li><a href={site.fransVersie} lang="fr">Version française</a></li>}
       </ul>
     </div>
 

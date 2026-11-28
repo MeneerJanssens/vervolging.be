@@ -8,5 +8,6 @@ export default defineConfig({
   site: 'https://vervolging.be',
   trailingSlash: 'never',
   build: { format: 'file' },
-  integrations: [sitemap()],
+  // De bedankpagina hoort niet in zoekmachines.
+  integrations: [sitemap({ filter: (page) => !page.endsWith('/bedankt') })],
 });

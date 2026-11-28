@@ -8,12 +8,15 @@ import heldFoto from '../assets/foto/vrouw-achter-tralies.jpg';
 import gemeente from '../assets/foto/gemeente-afrika.jpg';
 import lezen from '../assets/foto/kinderen-lezen-bij-hut.jpg';
 import boek from '../assets/foto/boek-jas-met-kogelgaten.jpg';
+import { eindIso, periode, vandaagIso } from '../lib/datum';
 
 const projecten = (await getCollection('projecten', (p) => p.data.status === 'lopend')).sort((a, b) => a.data.volgorde - b.data.volgorde);
 const stem = (await getCollection('tijdschriften', (t) => t.data.reeks === 'de-stem')).sort((a, b) => +b.data.datum - +a.data.datum)[0];
 
-const vandaag = new Date();
-const komend = (await getCollection('evenementen', (e) => !e.data.concept && (e.data.einddatum ?? e.data.datum) >= vandaag)).sort((a, b) => +a.data.datum - +b.data.datum)[0];
+// Alle komende evenementen worden meegebouwd; het eerste is zichtbaar.
+// Een script onderaan schuift door als dat evenement sinds de build voorbij is.
+const vandaag = vandaagIso();
+const komend = (await getCollection('evenementen', (e) => !e.data.concept && eindIso(e) >= vandaag)).sort((a, b) => +a.data.datum - +b.data.datum);
 ---
 
 <Base titel="Home">
@@ -37,19 +40,15 @@ const komend = (await getCollection('evenementen', (e) => !e.data.concept && (e.
     </div>
   </section>
 
-  {komend && (
-    <aside class="aankondiging" aria-label="Komend evenement">
+  {komend.map((e, i) => (
+    <aside class="aankondiging" aria-label="Komend evenement" data-einde={eindIso(e)} hidden={i > 0}>
       <div class="wrap aankondiging-binnen">
-        <p class="aankondiging-datum">
-          {komend.data.einddatum
-            ? `${komend.data.datum.getDate()} en ${komend.data.einddatum.toLocaleDateString('nl-BE', { day: 'numeric', month: 'long', year: 'numeric' })}`
-            : komend.data.datum.toLocaleDateString('nl-BE', { day: 'numeric', month: 'long', year: 'numeric' })}
-        </p>
-        <p class="aankondiging-tekst"><strong>{komend.data.titel}.</strong> {komend.data.samenvatting}</p>
-        {komend.data.link && <a href={komend.data.link} class="knop knop-blauw">{komend.data.linkTekst ?? 'Meer info'}</a>}
+        <p class="aankondiging-datum">{periode(e.data.datum, e.data.einddatum)}</p>
+        <p class="aankondiging-tekst"><strong>{e.data.titel}.</strong> {e.data.samenvatting}</p>
+        {e.data.link && <a href={e.data.link} class="knop knop-blauw">{e.data.linkTekst ?? 'Meer info'}</a>}
       </div>
     </aside>
-  )}
+  ))}
 
   <!-- Missie -->
   <section class="sectie">
@@ -185,6 +184,16 @@ const komend = (await getCollection('evenementen', (e) => !e.data.concept && (e.
 
   <OproepSteun />
 </Base>
+
+<script>
+  // Toon het eerste evenement dat nog niet voorbij is (de site wordt niet elke dag gebouwd).
+  const vandaag = new Date().toLocaleDateString('sv-SE', { timeZone: 'Europe/Brussels' });
+  let getoond = false;
+  document.querySelectorAll<HTMLElement>('.aankondiging[data-einde]').forEach((el) => {
+    el.hidden = getoond || (el.dataset.einde ?? '') < vandaag;
+    if (!el.hidden) getoond = true;
+  });
+</script>
 
 <style>
   /* Opening */

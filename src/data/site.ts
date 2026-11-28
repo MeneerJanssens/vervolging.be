@@ -19,7 +19,8 @@ export const site = {
   facebook: 'https://www.facebook.com/HVKAEM/',
   // TODO: YouTube-kanaal-URL aanvullen
   youtube: '',
-  fransVersie: 'https://www.persecution.be',
+  // Leeg = de Franse links blijven verborgen. Vul 'https://www.persecution.be' in zodra de Franse site online staat.
+  fransVersie: '',
   goatcounter: 'https://hvk.goatcounter.com/count',
 };
 

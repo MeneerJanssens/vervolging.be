@@ -4,18 +4,17 @@ import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import PaginaKop from '../components/PaginaKop.astro';
 import VideoSpeler from '../components/VideoSpeler.astro';
+import { eindIso, periode, vandaagIso } from '../lib/datum';
 
-const vandaag = new Date();
-vandaag.setHours(0, 0, 0, 0);
+// De site is statisch: "vandaag" is de dag van de build. Een script onderaan
+// verbergt evenementen die sinds de laatste build voorbij zijn.
+const vandaag = vandaagIso();
 const alle = await getCollection('evenementen', (e) => !e.data.concept);
-const komend = alle.filter((e) => (e.data.einddatum ?? e.data.datum) >= vandaag).sort((a, b) => +a.data.datum - +b.data.datum);
-const voorbij = alle.filter((e) => (e.data.einddatum ?? e.data.datum) < vandaag).sort((a, b) => +b.data.datum - +a.data.datum);
+const komend = alle.filter((e) => eindIso(e) >= vandaag).sort((a, b) => +a.data.datum - +b.data.datum);
+const voorbij = alle.filter((e) => eindIso(e) < vandaag).sort((a, b) => +b.data.datum - +a.data.datum);
 
 const videos = await getCollection('videos');
 const videoVoor = (id?: string) => (id ? videos.find((v) => v.data.youtubeId === id) : undefined);
-
-const fmt = (d: Date) => d.toLocaleDateString('nl-BE', { day: 'numeric', month: 'long', year: 'numeric' });
-const periode = (a: Date, b?: Date) => (b ? `${a.getDate()} en ${fmt(b)}` : fmt(a));
 ---
 
 <Base titel="Agenda" beschrijving="Komende bijeenkomsten van Hulp aan de Verdrukte Kerk en een terugblik op eerdere evenementen.">
@@ -24,12 +23,11 @@ const periode = (a: Date, b?: Date) => (b ? `${a.getDate()} en ${fmt(b)}` : fmt(
   <section class="sectie">
     <div class="wrap">
       <h2>Binnenkort</h2>
-      {komend.length === 0 ? (
-        <p class="leeg">Er staan op dit moment geen evenementen gepland. Wil je HVK uitnodigen in je kerk? <a href="/doe-mee/nodig-ons-uit">Vraag een presentatie aan</a>.</p>
-      ) : (
+      <p class="leeg" hidden={komend.length > 0}>Er staan op dit moment geen evenementen gepland. Wil je HVK uitnodigen in je kerk? <a href="/doe-mee/nodig-ons-uit">Vraag een presentatie aan</a>.</p>
+      {komend.length > 0 && (
         <ul class="events">
           {komend.map((e) => (
-            <li class="event komend">
+            <li class="event komend" data-einde={eindIso(e)}>
               <p class="datum">{periode(e.data.datum, e.data.einddatum)}</p>
               <div>
                 <h3>{e.data.titel}</h3>
@@ -61,7 +59,7 @@ const periode = (a: Date, b?: Date) => (b ? `${a.getDate()} en ${fmt(b)}` : fmt(
                     <p>{e.data.samenvatting}</p>
                   </div>
                   {v ? <VideoSpeler id={v.data.youtubeId} titel={v.data.titel} thumbnail={v.data.thumbnail} />
-                    : e.data.foto && <Image src={e.data.foto} alt={e.data.fotoAlt ?? ''} widths={[400, 700]} sizes="30vw" />}
+                    : e.data.foto && <Image src={e.data.foto} alt={e.data.fotoAlt ?? ''} widths={[400, 700]} sizes="(max-width: 56rem) 100vw, 30vw" />}
                 </div>
               </li>
             );
@@ -71,6 +69,17 @@ const periode = (a: Date, b?: Date) => (b ? `${a.getDate()} en ${fmt(b)}` : fmt(
     </section>
   )}
 </Base>
+
+<script>
+  // Verberg evenementen die voorbij zijn sinds de laatste build.
+  const vandaag = new Date().toLocaleDateString('sv-SE', { timeZone: 'Europe/Brussels' });
+  const komend = [...document.querySelectorAll<HTMLElement>('.event.komend')];
+  komend.forEach((el) => { if ((el.dataset.einde ?? '') < vandaag) el.hidden = true; });
+  if (komend.length && komend.every((el) => el.hidden)) {
+    const leeg = document.querySelector<HTMLElement>('.leeg');
+    if (leeg) leeg.hidden = false;
+  }
+</script>
 
 <style>
   .events { list-style: none; padding: 0; margin: 2rem 0 0; }

@@ -5,16 +5,20 @@ import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { site } from '../data/site';
+import { nettePad } from '../lib/pad';
 
 interface Props {
   titel: string;
   beschrijving?: string;
   afbeelding?: string;
+  /** true = niet opnemen in zoekmachines (bv. de bedankpagina) */
+  noindex?: boolean;
 }
 
-const { titel, beschrijving = 'Hulp aan de Verdrukte Kerk (HVK) staat naast christenen die om hun geloof vervolgd worden: met praktische hulp, gebed en een stem in België.', afbeelding } = Astro.props;
-const volleTitel = Astro.url.pathname === '/' ? `${site.naam} | ${site.tagline}` : `${titel} | ${site.kort}`;
-const canonical = new URL(Astro.url.pathname, Astro.site);
+const { titel, beschrijving = 'Hulp aan de Verdrukte Kerk (HVK) staat naast christenen die om hun geloof vervolgd worden: met praktische hulp, gebed en een stem in België.', afbeelding, noindex = false } = Astro.props;
+const pad = nettePad(Astro.url.pathname);
+const volleTitel = pad === '/' ? `${site.naam} | ${site.tagline}` : `${titel} | ${site.kort}`;
+const canonical = new URL(pad, Astro.site);
 const ogBeeld = afbeelding ? new URL(afbeelding, Astro.site) : new URL('/og-hvk.jpg', Astro.site);
 ---
 
@@ -28,7 +32,14 @@ const ogBeeld = afbeelding ? new URL(afbeelding, Astro.site) : new URL('/og-hvk.
     <link rel="canonical" href={canonical} />
     <link rel="icon" href="/favicon.png" type="image/png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <link rel="alternate" hreflang="fr-BE" href={site.fransVersie} />
+    {noindex && <meta name="robots" content="noindex" />}
+    {/* Zodra de Franse site er is: per pagina naar de Franse tegenhanger verwijzen (en omgekeerd). */}
+    {site.fransVersie && pad === '/' && (
+      <>
+        <link rel="alternate" hreflang="nl-BE" href={canonical} />
+        <link rel="alternate" hreflang="fr-BE" href={site.fransVersie} />
+      </>
+    )}
     <meta name="theme-color" content="#0a2342" />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="nl_BE" />
